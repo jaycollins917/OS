@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>OS2</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script defer src="java.js"></script>
+</head>
+
+
+
+
+<body>
+
+    <div id="coSouris">
+            X: 0, Y: 0
+    </div>
+    
+    <header>
+        <p> OS 2 </p>
+    </header>
+
+    <div class="contenu">
+
+        <nav class="barreGauche">
+            <h1>Sommaire</h1>
+            <ul>
+                <li><a href="#definition-os">1. Définition d'un OS</a></li>
+                <li><a href="#structure-ordi">2. Structure d'un ordinateur</a></li>
+                <li><a href="#archi-simple">3. Architecture simplifiée</a></li>
+                <li><a href="#notions-fondamentales">4. Notions fondamentales</a></li>
+                <li><a href="#architecture-se">5. Architecture d'un SE</a></li>
+                <li><a href="#types-noyaux">6. Types de noyaux</a></li>
+            </ul>
+        </nav>
+
+        
+        <div class="leCours">
+
+            <section id="definition-os">
+                <h1>Définition d'un OS</h1>
+                <ul>
+                    <li>Programme assurant la gestion de l'ordinateur et de ses périphériques</li>
+                    <li>Ensemble central de programmes qui sert d'interface entre le matériel d'un ordinateur et les logiciels applicatifs</li>
+                </ul>
+                <h2>Le SE doit permettre</h2>
+
+                <ul>
+                    <li>L'intéraction avec des utilisateurs et l'exécution de leurs ordres dans la limite de leurs privilèges</li>
+                    <li>La protection de l'information: contre lecture/écriture non autorisée (confidentialité des données)</li>
+                    <li>La protection du matériel</li>
+                    <li><strong>Postulat : </strong>L'accès aux ressources et à l'information doit s'effectuer sous un contrôle strict du système</li>
+                </ul>
+            </section>
+
+            <section id="structure-ordi">
+                <h1>Structure d'un ordinateur</h1>
+                <ul>
+                    <li><strong>CPU :</strong> Central Processing Unit : exécute les instructions. Cycle très haute vitesse appelé Fetch-Decode-Execute (Chercher - Décoder - Exécuter)</li>
+                    <li><strong>Chipset :</strong> chef d'orchestre (jeu de puces) de la carte mère. Ensemble de circuits intégrés dont le rôle est de coordonner et gérer les échanges de données entre la CPU et les autres composants de l'ordinateur (RAM, carte graphique, DD, USB, etc..)</li>
+                    <li><strong>Northbridge :</strong> n'existe plus. Gérait les composants ultra-rapides comme la RAM et la carte graphique</li>
+                    <li><strong>Southbridge :</strong> renommé aujourd'hui. Chipset qui gère les E/S lentes de la carte mère</li>
+                    <li><strong>DDR2 :</strong> DDR2 SDRAM - Double data rate synchronous dynamic random access memory</li>
+                    <li><strong>DMI :</strong> Direct media interface, pont entre le Northbridge et le Southbridge</li>
+                    <li><strong>PCIe :</strong> Peripheral component interconnect express</li>
+                    <li><strong>EFI Boot ROM :</strong> puce de mémoire flash contenant le micrologiciel/BIOS de la machine</li>
+                    <li><strong>SPI :</strong> Serial peripheral interface. Lien entre le Southbridge et la puce EFI Boot ROM</li>
+                    <li><strong>EFI :</strong> Extensible firmware interface. Programme de démarrage de la machine. Remplace le BIOS depuis 2020.</li>
+                    <li><strong>HDD :</strong> Hard Disk Drive. Il utilisait le port parallèle ATA pour communiquer avec le Southbridge. Vitesse : 100 Mo/s</li>
+                    <li><strong>SSD :</strong> Solid State Drive. Grosse clé USB. Stocke sur des puces de mémoire flash. Vitesse : 550 Mo/s à 7 000 Mo/s</li>
+                    <li><strong>ATA :</strong> Advanced technology attachment. Remplacé par SATA (serial ATA).</li>
+                </ul>
+
+                <div class="picture">
+                    <img src="Ordi.jpg" alt="Carte mère"/>
+                </div>
+            </section>
+
+
+            <section id="archi-simple">
+
+                <h1>Schéma simplifié d'un ordinateur (architecture Von Neumann)</h1>
+                <div class="picture">
+                    <img src="ordisimple.jpg" alt="schéma"/>
+                </div>            
+
+                <h2>Les composants</h2>
+
+                <ul>
+                    <li><strong>Microprocesseur (CPU) : </strong>C'est le cerveau. Il exécute les instructions des programmes et orchestre tout le système. Effectue les calculs et dirige les transferts d'information (données, instruction)</li>
+                    <li><strong>Mémoire : </strong>Mémoire vive RAM -> Random access (accès aléatoire) signifie que le CPU peut accéder à n'importe quelle partie de la zone mémoire directement et en un temps unique, contrairement au DD où l'accès est séquentiel, il faut dérouler un plateau. C'est <strong>la planche de travail de la CPU : </strong>Elle stocke les données et les programmes en cours d'exécution pour que le CPU y accède rapidement.</li>
+                    <li><strong>Entrée/Sortie : </strong>L'interface avec le monde extérieur (clavier, souris, écran, disque dur) pour recevoir ou envoyer des données.</li>
+
+                    
+                </ul>
+
+                <h2>Les 3 types de bus</h2>
+                
+                <ul>
+                    <li><strong>Bus de données : </strong>Transporte le contenu réel (les bits d'un fichier, une variable de code, une image) entre les trois blocs.</strong></li>
+                    <li><strong>Bus d'adresse : </strong>Indique où envoyer ou récupérer l'information (ex: "Je veux lire la case mémoire n°1024").</li>
+                    <li><strong>Bus de commande : </strong>Transmet les ordres de contrôle et de synchronisation (ex: "C'est une opération de Lecture" ou "C'est une opération d'Écriture").</li>
+                </ul>
+            </section>
+
+            <section id="notions-fondamentales">
+                <h1> Notions fondamentales</h1>
+
+                <ul>
+                    <li><strong>Processus : </strong>exécution d'un programme</li>
+                    <li><strong>Ressource : </strong>toute entité nécessaire à la progression d'un processus</li>
+                </ul>
+
+                <h2>Types de ressources</h2>
+
+                <ul>
+                    <li><strong>Matérielle : </strong>L'UC, RAM, périphérique, disque dur </li>
+                    <li><strong>Logicielle : </strong>Les données, le code (les instructions), fichiers, sémaphore, socket réseau...</li>
+                </ul>
+            
+                <h2>Types d'accès aux ressources: partagé ou exclusif</h2>
+                <p>Par exemple si deux processus envoient des données à l'imprimante en même temps, les caractères seront mélangés. La notion d'exclusivité est nécessaire ici.</p>
+
+                <h2>Temps partagé</h2>
+
+                <p>Le temps partagé (time-sharing) est une technique de l'OS pour donner l'illusion du parallélisme (appelé pseudo-parallélisme) sur un seul cœur de processeur.</p>
+
+                <ul>
+                    <li>Le principe : Le processeur n'exécute pas les processus en même temps, mais les uns après les autres à toute vitesse.</li>
+                    <li>Le Quantum de temps : L'OS attribue à chaque processus un temps de parole très court (quelques millisecondes), appelé quantum.</li>
+                    <li>La rotation (Commutation de contexte) : Dès que le temps d'un processus est écoulé, l'OS le suspend, sauvegarde son état, et passe au processus suivant.</li>
+                </ul>
+            </section>
+
+            <section id="architecture-se">
+                <h1>Architecture (simplifiée) d'un OS</h1>
+                <p>L'architecture d'un système d'exploitation est structurée en couches indépendantes. Plus on monte, plus on est proche de l'utilisateur. Plus on descend, plus on se rapproche du matériel.</p>
+
+                <h2>Les différentes couches (de haut en bas) --> L'OS  s'étend sur les 3 couches intermédiaires</h2>
+                <img src="archiSE.jpg" alt="Architecture d'un OS"/>
+                <ul>
+                    <li><strong>Applications & Interfaces :</strong> Programmes de niveau utilisateur (compilateurs, navigateur, éditeur de texte). L'interaction se fait via une <strong>Interface graphique (GUI)</strong> (système de multifenêtrage) ou une <strong>CLI (Command-line interface)</strong> constituée d'un interpréteur de commandes (shell).</li>
+                    <li><strong>Bibliothèques :</strong> Regroupent des fonctions/procédures ou variables prédéfinies compilées selon une thématique commune (ex : bibliothèque des fonctions mathématiques) pour faciliter le développement.</li>
+                    <li><strong>API (Application Programming Interface) :</strong> Point de contact qui gère les <strong>appels système</strong> ou les primitives système pour faire le pont de manière sécurisée avec le noyau.</li>
+                    <li><strong>Noyau (Kernel ou "système") :</strong> C'est le cœur du SE et le sujet principal du cours. Il coordonne les processus et gère l'allocation des ressources.</li>
+                    <li><strong>Système de fichiers & Pilotes :</strong> 
+                        <ul>
+                            <li><em>Système de fichiers :</em> Une présentation logique de l'information enregistrée sous forme de fichiers situés sur les périphériques matériels.</li>
+                            <li><em>Pilotes (Drivers) :</em> Traducteurs matériels pouvant faire partie du noyau de façon <strong>statique</strong> (édition des liens) ou <strong>dynamique</strong> (chargement sous forme de modules).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Matériel (Hardware) :</strong> Les composants physiques (processeur, mémoire, périphériques).</li>
+                </ul>
+            </section>
+
+            <section id="types-noyaux">
+                <h1>Types de noyaux selon leur organisation</h1>
+                
+                <table class="tableauNoyaux">
+                    <thead>
+                        <tr>
+                            <th>Type de noyau</th>
+                            <th>Description</th>
+                            <th>Avantages</th>
+                            <th>Inconvénients</th>
+                            <th>Exemples concrets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Monolithique</strong></td>
+                            <td>Un seul bloc exécutable généré à la compilation. Tout est soudé ensemble.</td>
+                            <td>Simplicité, rapidité d'exécution, forte protection.</td>
+                            <td>Nécessité d'inclure les pilotes &rArr; taille importante, mises à jour peu aisées, stabilité délicate, faille de sécurité &rArr; tout est menacé.</td>
+                            <td>Anciens systèmes (MS-DOS)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modulaire</strong></td>
+                            <td>Un bloc principal de base + des extensions (modules/pilotes) chargés dynamiquement à la demande.</td>
+                            <td>Simplicité, rapidité d'exécution, forte protection, plus de flexibilité matérielle.</td>
+                            <td>Stabilité délicate (si un module planté s'exécute au niveau du cœur).</td>
+                            <td><strong>Linux Debian</strong>, <strong>Android</strong> (basé sur le noyau Linux)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>&mu;-noyau (Micro-noyau)</strong></td>
+                            <td>Le noyau est réduit au strict minimum. Le maximum de fonctionnalités (pilotes, fichiers) est déporté au niveau utilisateur en petits blocs indépendants.</td>
+                            <td>Facilité de développement, de maintenance, stabilité, faille de sécurité &ne; tout est menacé.</td>
+                            <td>Goulot d'étranglement au niveau des communications internes, sécurité mal maîtrisée.</td>
+                            <td>MINIX, GNU Hurd, QNX</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exo-noyau</strong></td>
+                            <td>Tout ou presque est déporté au niveau utilisateur. Le noyau gère juste l'accès sécurisé aux ressources sans imposer d'abstraction.</td>
+                            <td>Bonne performance (les applications accèdent directement au matériel).</td>
+                            <td>Sécurité difficile à garantir.</td>
+                            <td>Systèmes de recherche (ExOS)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hybride</strong></td>
+                            <td>Structure intermédiaire : garde l'organisation découpée du micro-noyau, mais réintègre certaines fonctions critiques au niveau du noyau pour la vitesse.</td>
+                            <td><strong>MAX</strong> d'avantages (vitesse et modularité).</td>
+                            <td><strong>MIN</strong> d'inconvénients.</td>
+                            <td><strong>Windows 11</strong> (noyau NT), macOS (noyau XNU)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </div>      <!-- Fin div Le Cours -->
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+
+html {
+    scroll-behavior: smooth;    /* Permet un défilement tout doux quand on clique sur le sommaire */
+}
+
+body {
+    background-color: rgb(10, 10, 10);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing:px;
+    color: white;
+
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+        url('galaxie.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+#coSouris {        
+    color: white;
+    font-size: 15px;
+}
+
+header {                    /* Là où il y a marqué OS 2 */
+
+    display: flex;
+    justify-content: center;
+    border: solid 2px;
+
+    border-color: rgb(65, 65, 65);
+    margin: 0px;
+
+    font-size: 30px;
+    font-weight:bold;
+    color: white;
+    padding-bottom: 1px;
+
+}
+
+header p {                      /* Les propriétés liées à la structure de la boîte n'héritent jamais du parent : margin, padding, border, width, height */
+    margin: 15px;
+    padding: 0;
+    opacity: 70%;
+}
+
+h1 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    padding: 0;
+
+    list-style-type: none;      /* Supprime la puce (le rond blanc à gauche) */
+    color: rgb(89, 119, 255);
+    font-size: 1.3rem;
+}
+
+h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    padding: 0;
+
+    list-style-type: none;      /* Supprime la puce (le rond blanc à gauche) */
+    color: rgb(253, 206, 134);
+    font-size: 1.2rem;
+}
+
+p {
+    margin-left: 20px;
+}
+
+
+
+/* Conteneur principal qui aligne le menu et le cours */
+.contenu {
+    display: flex;
+    align-items: flex-start;  /* Aligne les éléments en haut, sans les étirer */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* La barre gauche devient fixe et "colle" à l'écran pendant le défilement */
+.barreGauche {
+    width: 250px;
+    flex-shrink: 0;
+   
+    position: sticky;
+    top: 40px; /* Laisse un espace de 40px avec le haut de l'écran */
+    margin-left: 10px;
+}
+
+/* Nettoyage de la liste du sommaire */
+.barreGauche ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 15px 0 0 0;
+}
+
+.barreGauche li {
+    margin-bottom: 15px;
+}
+
+
+.barreGauche a, nav>h1 {
+    text-decoration: none;
+    color: #00bcd4;                             /* Un joli bleu cyan assorti au tableau plutôt que le bleu brut */
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+/* Effet au survol des liens */
+.barreGauche a:hover {
+    color: #ffb74d; /* Devient orange au survol */
+    text-decoration: underline;
+}
+
+.leCours {
+
+    margin: 0px;
+    padding: 25px;
+    width: 100%;
+    
+    border: solid 1px;
+    border-color:  rgb(111, 0, 255);   
+
+}
+
+
+.leCours li {
+    margin-block: 15px;         /* margin block: en haut et en bas */
+    margin-inline: 20px;        /* margin iniline: à gauche et à droite */
+    padding: 0;
+    
+
+    color:white;
+    font-size:1rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+}
+
+strong {
+    color:rgb(111, 255, 98);
+}
+
+.picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img {
+    padding: 20px;
+}
+
+
+/* Style du tableau adapté au thème sombre */
+.tableauNoyaux {
+    width: 80%; /* Prend désormais 80% de la largeur disponible */
+    margin: 25px auto; /* Centrage automatique horizontal (auto à gauche et à droite) */
+    border-collapse: collapse;
+    font-size: 0.95em;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.tableauNoyaux th, .tableauNoyaux td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff; /* Force tout le texte de description en blanc */
+}
+
+/* En-tête du tableau */
+.tableauNoyaux th {
+    background-color: rgba(255, 255, 255, 0.15); /* Fond de l'en-tête plus opaque */
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+/* Alternance des lignes (on oublie le blanc uni !) */
+.tableauNoyaux tbody tr:nth-of-type(even) {
+    background-color: rgba(255, 255, 255, 0.02); 
+}
+
+.tableauNoyaux tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.2); 
+}
+
+/* Effet de survol */
+.tableauNoyaux tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Couleur spécifique pour les noms des types de noyaux à gauche */
+.tableauNoyaux td strong {
+    color: #00bcd4; /* Un joli bleu cyan pour faire ressortir les titres */
+}
+
+/* Couleur spécifique pour tes exemples tout à droite */
+.tableauNoyaux td:last-child {
+    color: #ffb74d; /* Un orange doux pour bien distinguer Linux, Windows, Android */
+    font-weight: bold;
+}
