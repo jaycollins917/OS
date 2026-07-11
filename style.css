@@ -105,16 +105,16 @@ p {
 }
 
 
-.barreGauche a, nav>h1 {
-    text-decoration: none;
-    color: #00bcd4;                             /* Un joli bleu cyan assorti au tableau plutôt que le bleu brut */
+.barreGauche a, nav>h1, .liens_ext {
+    text-decoration: none;                     /* Pour éviter que les liens soient soulignés */
+    color: #00bcd4;                          /* Cette couleur évite que le lien ne change de couleur quand on clique dessus */
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 /* Effet au survol des liens */
-.barreGauche a:hover {
-    color: #ffb74d; /* Devient orange au survol */
+a:hover {
+    color: #ffb74d;                         /* Devient orange au survol */
     text-decoration: underline;
 }
 

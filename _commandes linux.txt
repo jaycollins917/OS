@@ -1,0 +1,50 @@
+/dev	
+
+COMMANDES LINUX
+
+***************************		MAN(1)  User Commands   ***************************
+
+cat		Programme qui prend le texte d'un fichier et l'affiche sur le terminal. /user/bin
+less	Programme qui affiche une fenêtre temporaire pour ne pas surcharger le terminal, avec des fonctions de défilement/lecture
+
+	
+cd ..	Répertoire parent
+
+fdisk	manipuler la table de partition d'un disque
+sudo fdisk /dev/sdc
+
+lsblk	liste les périphériques de blocs (cad en jargon Linux, matériel de stockage)
+lsblk -f /dev/sdb	Détails de la partition
+
+umount	démonter des fichiers systèmes.
+	supprimer une partition, un point de montage 
+
+ls	List directory content
+ls -m	Liste avec des virgules
+ls -a	Affiche .  (répertoire courant)
+		.. (répertoire parent)	
+		.cache (le cache)
+		
+ls -l	liste les répertoires au format long
+---------------------------------------------
+Exemple
+ls -l /media
+
+drwxrwx---  1 root vboxsf 4096 28 juin 21:30 sf_Downloads
+d	directory
+
+rwx	les droits du propriétaire	(x = exécution)
+rwx	les droits du groupe
+---	les droits des autres utilisateurs
+
+root	le propriétaire
+vboxsf	le groupe qui a les droits
+---------------------------------------------
+
+groups	affiche les groupes auxquel l'utilisateur actuel appartient
+
+ps			liste les processus de l'utilisateur
+ps -e		liste tous les processus
+ps -aux	-a	tous les processus de tous les utilisateurs
+		-u	au format orienté utilisateur
+		-x	ajoute les processus non rattachés à un terminal (démons/services)

@@ -38,6 +38,10 @@
                 <li><a href="#notions-fondamentales">4. Notions fondamentales</a></li>
                 <li><a href="#architecture-se">5. Architecture d'un SE</a></li>
                 <li><a href="#types-noyaux">6. Types de noyaux</a></li>
+                <li><a href="#les-processus">7. Les processus</a></li>
+                <li><a href="#table-processus">8. Table des processus</a></li>
+                <li><a href="#regions-processus">9. Régions des processus</a></li>
+                <li><a href="#les-threads">10. Les threads</a></li>
             </ul>
         </nav>
 
@@ -82,7 +86,6 @@
                     <img src="Ordi.jpg" alt="Carte mère"/>
                 </div>
             </section>
-
 
             <section id="archi-simple">
 
@@ -211,6 +214,150 @@
                         </tr>
                     </tbody>
                 </table>
+            </section>
+
+            <!-- SECTION : LES PROCESSUS -->
+            <section id="les-processus">
+                <h1>Les processus</h1>
+
+                <div class="definition-box">
+                    <p><strong>Un processus &nbsp;=&nbsp; une exécution d’un programme</strong></p>
+                </div>
+
+                <ul>
+                    <li>Chaque processus est créé par un autre processus (<strong>père &rArr; fils</strong>).</li>
+                    <li>Chaque processus possède son espace d’adressage constitué de plusieurs <strong>régions</strong>.</li>
+                    <li>Une tentative d’accès hors de cet espace provoque une <strong>interruption</strong>.</li>
+                    <li>Chaque région est découpée en pages de taille fixe.</li>
+                </ul>
+
+                <h2>Régions typiques d’un processus Linux</h2>
+
+                <ul>
+                    <li><strong>.text : </strong>Contient les instructions en langage machine</li>
+                    <li><strong>.data : </strong>Données initialisées</li>
+                    <li><strong>BSS :</strong> Données non initialisées (<em>block started by symbol</em>)</li>
+                    <li><strong>Stack :</strong> Pile d’exécution. Zone mémoire dynamique. Contient les variables locales (temporaires), les paramètre d'entrée de fonction. Quand une fonction est terminée (return), toutes les données sont supprimées.</li>
+                    <li><strong>Heap :</strong> &laquo;&nbsp;tas&nbsp;&raquo; (pile d’allocation dynamique de la mémoire)</li>
+                    <li>Les régions associées aux diverses bibliothèques utilisées</li>
+                    <li>Les droits d’accès du processus à ses régions sont <strong>r-x</strong> ou <strong>rw-</strong> ou <strong>r--</strong> suivi d’un 4<sup>ème</sup> caractère :
+                        <ul>
+                            <li><strong>s</strong> : <em>shared</em> (partagé)</li>
+                            <li><strong>p</strong> : <em>private</em> (privé)</li>
+                        </ul>
+                </ul>
+
+                <p>Commande pour lister les régions du processus numéro <em>n</em> (où <em>n</em> est le PID du processus) : <strong>less /proc/n/maps</strong></p>
+                <ul>
+                    <li><a class="liens_ext" href="maps.html" target="_blank">Détails de la commande maps sur un processus</a></li>
+                </ul>
+            </section>
+
+            <!-- SECTION 8 : TABLE DES PROCESSUS -->
+            <section id="table-processus">
+                <h1>8. Table des processus</h1>
+                
+                <p>La table des processus est stockée de manière invisible en RAM dans l'espace noyau, mais l'OS' expose son contenu de manière transparente à travers le répertoire virtuel /proc et les commandes comme ps ou htop</p>
+
+                <div class="picture">
+                    <img src="./res/org_proc.jpg" alt="Organisation conceptuelle des processus"/>
+                </div>
+
+                <h2>Concepts clés</h2>
+                <ul>
+                    <li><strong>Espace Noyau :</strong> Réservé au système d'exploitation, il contient la <strong>table des processus</strong>. Chaque entrée de cette table pointe vers un processus chargé en mémoire.</li>
+                    <li><strong>Espace Utilisateur :</strong> Zone isolée allouée à chaque processus (Processus A, B, C, D) contenant son propre espace d'adressage virtuel.</li>
+                    <li><strong>Zoom structurel :</strong> On y retrouve l'organisation classique vue en TP : le code tout en bas, suivi des données, du tas qui grandit vers le haut, et de la pile qui redescend depuis les adresses hautes.</li>
+                </ul>
+
+                <figure class="picture">
+                    <img src="./res/htop.jpg" alt="Affichage de la table des processus avec htop" />
+                    <figcaption>Visualisation dynamique de la table des processus via la commande htop</figcaption>
+                </figure>
+
+            </section>
+
+            <!-- SECTION 9 : REGIONS DES PROCESSUS -->
+            <section id="regions-processus">
+                <h1>9. Régions des processus</h1>
+
+                <div class="picture">
+                    <img src="./res/org_region.jpg" alt="Organisation des régions"/>
+                </div>
+
+                <h2>Explications</h2>
+
+                <p><strong>Une table : </strong> est un tableau, une structure de données en mémoire composée de plusieurs cases alignées, toutes de même structure</p>
+                <p><strong>La table des processus :</strong> est un grand tableau géré par le noyau. Chaque case représente un processus actif du système, et contient la structure d'identité du processus (le PCB ou task_struct), qui inclut notamment le pointeur vers sa région.
+                    </br>La table des processus ne contient pas l'ensemble des régions du processus, mais des pointeurs faisant référence à ces régions.
+                </p>
+
+                <p><strong>La table des régions du processus X : </strong> contient l'ensemble des régions du processus (.text, .data, voir lien "maps"). Ses adresses mémoire son virtuelles</p>
+                
+                <p><strong>La table des régions (noyau) : </strong> Dans un espace de la RAM, l'ensemble des régions des processus est organisée dans la table des régions.
+                    </br>Si 50 processus utilisent la même bibliothèque, celle-ci ne va pas être chargée 50 fois. Cette bibliothèque va être partagée entre les processus.
+                </p>
+
+                <div class="definition-box">
+                    <p><strong>Région &nbsp;=&nbsp; Segment &nbsp;=&nbsp; VMA (Virtual Memory Area &rarr; Linux)</strong></p>
+                    <ul>
+                        <li><strong>Région :</strong> Terme conceptuel et pédagogique utilisé en cours pour désigner un bloc homogène de mémoire virtuelle (ex: Pile, Tas).</li>
+                        <li><strong>Segment :</strong> Terme matériel (hardware) lié à l'architecture des processeurs qui sépare physiquement le code des données.</li>
+                        <li><strong>VMA (Virtual Memory Area) :</strong> Terme technique officiel du noyau Linux; c'est la structure en C (`vm_area_struct`) qui représente chaque ligne affichée par la commande `maps`.</li>
+                    </ul>  
+                </div>
+
+
+                <h2>Le mécanisme de traduction de la mémoire</h2>
+                <ul>
+                    <li><strong>Niveau Logique (Le Processus) :</strong> La table d'un processus pointe vers sa propre <em>table des régions</em> (ses blocs de mémoire virtuels).</li>
+                    <li><strong>Niveau Système (Le Noyau) :</strong> La table globale des régions du noyau permet de centraliser la mémoire. C'est grâce à elle que deux processus différents peuvent partager une même bibliothèque en RAM (liaison dynamique).</li>
+                    <li><strong>Niveau Matériel (La Table des Pages) :</strong> Chaque région est découpée en blocs de taille fixe de <strong>4 Ko</strong> (les pages). La table des pages fait l'aiguillage final :
+                        <ul>
+                            <li>Vers la <strong>RAM (Mémoire vive)</strong> si les données doivent être lues/écrites immédiatement par le CPU.</li>
+                            <li>Vers la <strong>Mémoire de masse (Disque / Swap)</strong> si la page n'est pas chargée ou a été déplacée sur le disque.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+<!-- SECTION 10 : LES THREADS -->
+            <section id="les-threads">
+                <h1>10. Les threads</h1>
+                
+                <h2>Introduction : Qu'est-ce qu'un thread ?</h2>
+                <div class="definition-box">
+                    <p>En anglais, le mot <strong>"thread"</strong> signifie littéralement <strong>"un fil"</strong> (de discussion ou à coudre). En informatique, on parle de <strong>fil d'exécution</strong>.</p>
+                    <p>Concrètement, un thread sert à exécuter plusieurs tâches simultanément au sein d'un même programme. Ses principaux objectifs sont :</p>
+                    <ul>
+                        <li><strong>La réactivité :</strong> Éviter qu'une application ne se bloque (ne "freeze") pendant un long traitement (ex: télécharger un fichier en tâche de fond tout en gardant l'interface graphique fluide).</li>
+                        <li><strong>La performance :</strong> Exploiter la puissance des processeurs multi-cœurs en répartissant les calculs sur plusieurs cœurs en même temps.</li>
+                        <li><strong>La légèreté :</strong> Économiser la mémoire vive (RAM) en évitant de dupliquer un processus entier. Contrairement aux processus, les threads partagent le même espace mémoire, ce qui les rend ultra-rapides à créer et à détruire.</li>
+                    </ul>
+                </div>
+
+                <h2>Propriétés fondamentales</h2>
+                <ul>
+                    <li><strong>Définition :</strong> Un thread (ou "processus léger") est une unité d'exécution créée à l'intérieur d'un processus.</li>
+                    <li><strong>Indépendance :</strong> Chaque thread possède sa propre <strong>pile d'exécution</strong> exclusive.</li>
+                    <li><strong>Partage :</strong> Par défaut, toutes les autres régions du processus (Code, Tas, Données) sont partagées entre tous ses threads.</li>
+                    <li><strong>Cas par défaut :</strong> Si aucun thread n'est explicitement créé, le processus comporte un seul thread unique qui se confond avec le processus lui-même.</li>
+                    <li><strong>Exécution :</strong> Les threads s'exécutent de façon pseudo-parallèle (ou en parallèle réel sur une architecture multiprocesseur).</li>
+                </ul>
+
+                <div class="definition-box">
+                    <p><strong>Vocabulaire Linux :</strong> Le terme <strong>tâche</strong> (task) désigne indistinctement un processus ou un thread au sein du noyau.</p>
+                </div>
+
+                <figure class="picture">
+                    <img src="./res/thread.jpg" alt="htop thread" />
+                    <figcaption>Exemples des threads du processus colord avec htop</figcaption>
+                </figure>
+
+                <p>Sur Linux, tout est tâche. Donc PID c'est un processus ou un thread. Ce sont des tâches.</p>
+                <p>Mais si on regarde TGIP, on voit que les thread appartiennent tous au processus parent, 1748.</p>
+                <p>Commandes utiles en TP - ls /proc/n/task - htop</p>
+
             </section>
 
         </div>      <!-- Fin div Le Cours -->
