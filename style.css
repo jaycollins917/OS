@@ -65,12 +65,13 @@ h2 {
     padding: 0;
 
     list-style-type: none;      /* Supprime la puce (le rond blanc à gauche) */
-    color: rgb(253, 206, 134);
+    color: rgb(215, 134, 253);
     font-size: 1.2rem;
 }
 
 p {
     margin-left: 20px;
+    line-height: 1.8em;
 }
 
 
@@ -91,6 +92,11 @@ p {
     position: sticky;
     top: 40px; /* Laisse un espace de 40px avec le haut de l'écran */
     margin-left: 10px;
+
+    /* --- AJOUTS POUR LE DÉFILEMENT INTERNE --- */
+    max-height: calc(100vh - 60px); /* Limite la hauteur du menu à la hauteur de l'écran */
+    overflow-y: auto;               /* Ajoute un scroll si le sommaire dépasse */
+    padding-right: 10px;            /* Petit espace pour ne pas coller à la barre de scroll */
 }
 
 /* Nettoyage de la liste du sommaire */
@@ -116,6 +122,31 @@ p {
 a:hover {
     color: #ffb74d;                         /* Devient orange au survol */
     text-decoration: underline;
+}
+
+/* Personnalisation de la barre de défilement pour les navigateurs modernes (Chrome, Edge, Safari) */
+.barreGauche::-webkit-scrollbar {
+    width: 6px;
+}
+
+.barreGauche::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.barreGauche::-webkit-scrollbar-thumb {
+    background: rgba(0, 188, 212, 0.3); /* Utilise ton bleu cyan en transparence */
+    border-radius: 4px;
+}
+
+.barreGauche::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 188, 212, 0.6);
+}
+
+/* Version pour Firefox */
+.barreGauche {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 188, 212, 0.3) rgba(255, 255, 255, 0.05);
 }
 
 .leCours {
@@ -157,8 +188,10 @@ img {
 }
 
 
-/* Style du tableau adapté au thème sombre */
-.tableauNoyaux {
+/****************** Mise en page du tableau_style ************************/
+
+
+.tableau_style {
     width: 80%; /* Prend désormais 80% de la largeur disponible */
     margin: 25px auto; /* Centrage automatique horizontal (auto à gauche et à droite) */
     border-collapse: collapse;
@@ -170,7 +203,7 @@ img {
 }
 
 
-.tableauNoyaux th, .tableauNoyaux td {
+.tableau_style th, .tableau_style td {          /* th est table header, td est table data */
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -178,7 +211,7 @@ img {
 }
 
 /* En-tête du tableau */
-.tableauNoyaux th {
+.tableau_style th {
     background-color: rgba(255, 255, 255, 0.15); /* Fond de l'en-tête plus opaque */
     color: #ffffff;
     font-weight: 700;
@@ -187,27 +220,70 @@ img {
     letter-spacing: 0.5px;
 }
 
-/* Alternance des lignes (on oublie le blanc uni !) */
-.tableauNoyaux tbody tr:nth-of-type(even) {
+/* Alternance des lignes paires/impaires */
+.tableau_style tbody tr:nth-of-type(even) {
     background-color: rgba(255, 255, 255, 0.02); 
 }
 
-.tableauNoyaux tbody tr:nth-of-type(odd) {
+.tableau_style tbody tr:nth-of-type(odd) {
     background-color: rgba(0, 0, 0, 0.2); 
 }
 
 /* Effet de survol */
-.tableauNoyaux tbody tr:hover {
+.tableau_style tbody tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Couleur spécifique pour les noms des types de noyaux à gauche */
-.tableauNoyaux td strong {
-    color: #00bcd4; /* Un joli bleu cyan pour faire ressortir les titres */
+/* Couleur spécifique pour la première colonne */
+.tableau_style td strong, td:first-child {
+    color: #00bcd4;                             /* Un joli bleu cyan pour faire ressortir les titres */
+    white-space: nowrap;
 }
 
-/* Couleur spécifique pour tes exemples tout à droite */
-.tableauNoyaux td:last-child {
+/* Couleur spécifique pour les exemples tout à droite */
+.tableau_style .tab_exemple {
     color: #ffb74d; /* Un orange doux pour bien distinguer Linux, Windows, Android */
     font-weight: bold;
+}
+
+/****************** Mise en page des définitions ************************/
+
+
+dl {                        /* Description List: ul spécial dictionnaire */
+    margin-left: 20px;
+}
+dt {                        /* Description Term: définition à donner */
+    margin-top: 15px;
+}
+
+dfn {
+    font-style: normal;
+    font-weight: bold;
+    color: #ff4d4d;
+}
+
+dd {                        /* Description Details: La définition du terme */
+    margin-left: 20px;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+code {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-style: normal;
+    color:aqua;
+    margin: 5px;
+}
+
+.link_contenu {
+    margin:1em;
+    text-decoration: none;                     /* Pour éviter que les liens soient soulignés */
+    color: #00bcd4;                          /* Cette couleur évite que le lien ne change de couleur quand on clique dessus */
+    transition: color 0.2s ease;               /* Si on utilise la pseudo-classe hover */
+}
+
+.link_contenu:hover {
+    color: #ffb74d;                         /* Devient orange au survol */
+    text-decoration: underline;
 }

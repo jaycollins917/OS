@@ -1,0 +1,38 @@
+    
+    
+html {
+
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 30px;
+
+    font-size: 1.2rem;                      /* rem = Root em => taille de la police du document html (root) */
+    font-size: 1.2em;                       /* em  = taille de la police parente.   */
+
+    line-height: 1.5;                       /* Hauteur d'une ligne, donc l'espacement inter-ligne. 1.6 ou 1.8 em est bien aéré
+
+    font-weight:bold;
+    letter-spacing: 1px;
+
+    text-decoration: none;                     /* Pour éviter que les liens soient soulignés */
+
+}
+
+.lesLiens {
+
+    text-decoration: none;                     /* Pour éviter que les liens soient soulignés */
+    color: #00bcd4;                          /* Cette couleur évite que le lien ne change de couleur quand on clique dessus */
+
+    transition: color 0.2s ease;               /* Si on utilise la pseudo-classe hover */
+}
+
+/* Effet au survol des liens */
+.lesLiens:hover {
+    color: #ffb74d;                         /* Devient orange au survol */
+    text-decoration: underline;
+}
+
+/*****************   LES TABLEAUX    *************************/
+.tableau_style td strong, td:first-child {
+    color: #00bcd4;                         /* Un joli bleu cyan pour faire ressortir les titres */
+    white-space: nowrap;                      /* Forcer le texte sur une seule ligne */       
+}

@@ -1,0 +1,38 @@
+<!--
+1. <dl> : Description List (Liste de descriptions)
+C'est le conteneur principal. Elle indique au navigateur : 
+"Attention, ce qui suit n'est pas une simple liste à puces (comme <ul>), c'est un lexique ou un dictionnaire de termes suivis de leurs définitions."
+
+2. <dt> : Description Term (Terme à décrire)
+Cette balise sert à entourer le mot-clé, le titre ou l'expression que tu t'apprêtes à définir. Dans ton cas, le terme à décrire est Ready / Running (R).
+
+3. <dfn> : Definition element (Élément de définition)
+C'est la balise la plus précise du groupe. Elle indique que le texte à l'intérieur représente le terme exact en train d'être défini pour la toute première fois dans ton document ou ta section.
+Effet visuel par défaut : Elle met généralement le texte en italique.
+Utilité : C'est excellent pour l'accessibilité (les liseurs d'écran pour malvoyants comprennent ainsi que c'est un mot de vocabulaire important) 
+et pour les moteurs de recherche qui veulent indexer des définitions.
+
+
+4. <dd> : Description Details (Détails de la description)
+C'est le bloc qui contient le texte de la définition elle-même. Elle répond directement au <dt> qui est juste au-dessus.
+
+Effet visuel par défaut : Le navigateur applique automatiquement une marge (un retrait vers la droite) à ce texte pour que la mise en page ressemble graphiquement à un dictionnaire.
+-->
+
+
+<dl>
+    <dt><dfn>Ready / Running (R)</dfn></dt>
+    <dd>
+        La tâche est soit en cours d'exécution sur un cœur de processeur (<strong>Running</strong>), soit totalement prête à être exécutée (<strong>Ready</strong>) et attend simplement que l'ordonnanceur lui attribue du temps CPU (lors d'une <em>élection</em>).
+    </dd>
+
+    <dt><dfn>Sleeping Interruptible (S)</dfn></dt>
+    <dd>
+        C'est l'état de sommeil le plus classique. La tâche est en attente d'une ressource, d'un événement (comme une saisie clavier ou une donnée réseau) ou d'une temporisation (<code> sleep </code>). Elle peut être réveillée à tout moment par un signal (<strong>wake_up</strong>).
+    </dd>
+
+</dl>
+
+<em> </em>          <!---La balise HTML <em> (qui signifie emphasis, ou "phase" / "accentuation" en français) sert à mettre en valeur un mot ou une phrase dans un texte. -->
+
+

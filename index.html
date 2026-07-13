@@ -14,9 +14,6 @@
     <script defer src="java.js"></script>
 </head>
 
-
-
-
 <body>
 
     <div id="coSouris">
@@ -30,26 +27,53 @@
     <div class="contenu">
 
         <nav class="barreGauche">
-            <h1>Sommaire</h1>
-            <ul>
-                <li><a href="#definition-os">1. Définition d'un OS</a></li>
-                <li><a href="#structure-ordi">2. Structure d'un ordinateur</a></li>
-                <li><a href="#archi-simple">3. Architecture simplifiée</a></li>
-                <li><a href="#notions-fondamentales">4. Notions fondamentales</a></li>
-                <li><a href="#architecture-se">5. Architecture d'un SE</a></li>
-                <li><a href="#types-noyaux">6. Types de noyaux</a></li>
-                <li><a href="#les-processus">7. Les processus</a></li>
-                <li><a href="#table-processus">8. Table des processus</a></li>
-                <li><a href="#regions-processus">9. Régions des processus</a></li>
-                <li><a href="#les-threads">10. Les threads</a></li>
-            </ul>
+        <h1>Sommaire</h1>
+        <ul>
+            <li>
+                <strong>I. Introduction</strong>
+                <ul>
+                    <li><a href="#definition-os">1. Définition d'un OS</a></li>
+                    <li><a href="#structure-ordi">2. Structure d'un ordinateur</a></li>
+                    <li><a href="#archi-simple">3. Architecture simplifiée</a></li>
+                    <li><a href="#notions-fondamentales">4. Notions fondamentales</a></li>
+                    <li><a href="#architecture-se">5. Architecture d'un SE</a></li>
+                    <li><a href="#types-noyaux">6. Types de noyaux</a></li>
+                </ul>
+            </li>        
+            <li>
+                <strong>II. Les processus</strong>
+                <ul>
+                    <li><a href="#les-processus">1. Les processus</a></li>
+                    <li><a href="#table-processus">2. Table des processus</a></li>
+                    <li><a href="#regions-processus">3. Régions des processus</a></li>
+                    <li><a href="#les-threads">4. Les threads</a></li>
+                    <li><a href="#task-diag-etat">5. Diagramme d'état des tâches</a></li>
+                    <li><a href="#ordonnancement">6. Ordonnancement</a></li>
+                    <li><a href="#proc-attribut">7. Attributs</a></li>
+                    <li><a href="#appel-sys">8. Appels système</a></li>
+                    <li><a href="#cmd-proc">9. Commandes processus</a></li>
+                    <li><a href="#exclusion">10. Exclusion mutuelle</a></li>
+                    <li><a href="#interlock">11. Interblocages</a></li>
+                </ul>
+            </li>
+            <li>
+                <strong>III. La mémoire</strong>
+                <ul>
+                    <li><a href="#memoire-intro">1. Introduction</a></li>
+                    <li><a href="#ram">2. La RAM</a></li>
+                    <li><a href="#adresses-virtuelles">3. Les adresses virtuelles</a></li>
+                    <li><a href="#creation-region-executable">4. Les régions d'un fichier exécutable</a></li>
+                    
+                </ul>
+            </li>
+        </ul>
         </nav>
 
         
         <div class="leCours">
 
             <section id="definition-os">
-                <h1>Définition d'un OS</h1>
+                <h1>1. Définition d'un OS</h1>
                 <ul>
                     <li>Programme assurant la gestion de l'ordinateur et de ses périphériques</li>
                     <li>Ensemble central de programmes qui sert d'interface entre le matériel d'un ordinateur et les logiciels applicatifs</li>
@@ -65,7 +89,7 @@
             </section>
 
             <section id="structure-ordi">
-                <h1>Structure d'un ordinateur</h1>
+                <h1>2. Structure d'un ordinateur</h1>
                 <ul>
                     <li><strong>CPU :</strong> Central Processing Unit : exécute les instructions. Cycle très haute vitesse appelé Fetch-Decode-Execute (Chercher - Décoder - Exécuter)</li>
                     <li><strong>Chipset :</strong> chef d'orchestre (jeu de puces) de la carte mère. Ensemble de circuits intégrés dont le rôle est de coordonner et gérer les échanges de données entre la CPU et les autres composants de l'ordinateur (RAM, carte graphique, DD, USB, etc..)</li>
@@ -83,15 +107,15 @@
                 </ul>
 
                 <div class="picture">
-                    <img src="Ordi.jpg" alt="Carte mère"/>
+                    <img src="./res/Ordi.jpg" alt="Carte mère"/>
                 </div>
             </section>
 
             <section id="archi-simple">
 
-                <h1>Schéma simplifié d'un ordinateur (architecture Von Neumann)</h1>
+                <h1>3. Schéma simplifié d'un ordinateur (architecture Von Neumann)</h1>
                 <div class="picture">
-                    <img src="ordisimple.jpg" alt="schéma"/>
+                    <img src="./res/ordisimple.jpg" alt="schéma"/>
                 </div>            
 
                 <h2>Les composants</h2>
@@ -114,7 +138,7 @@
             </section>
 
             <section id="notions-fondamentales">
-                <h1> Notions fondamentales</h1>
+                <h1>4. Notions fondamentales</h1>
 
                 <ul>
                     <li><strong>Processus : </strong>exécution d'un programme</li>
@@ -143,11 +167,11 @@
             </section>
 
             <section id="architecture-se">
-                <h1>Architecture (simplifiée) d'un OS</h1>
+                <h1>5. Architecture (simplifiée) d'un OS</h1>
                 <p>L'architecture d'un système d'exploitation est structurée en couches indépendantes. Plus on monte, plus on est proche de l'utilisateur. Plus on descend, plus on se rapproche du matériel.</p>
 
                 <h2>Les différentes couches (de haut en bas) --> L'OS  s'étend sur les 3 couches intermédiaires</h2>
-                <img src="archiSE.jpg" alt="Architecture d'un OS"/>
+                <img src="./res/archiSE.jpg" alt="Architecture d'un OS"/>
                 <ul>
                     <li><strong>Applications & Interfaces :</strong> Programmes de niveau utilisateur (compilateurs, navigateur, éditeur de texte). L'interaction se fait via une <strong>Interface graphique (GUI)</strong> (système de multifenêtrage) ou une <strong>CLI (Command-line interface)</strong> constituée d'un interpréteur de commandes (shell).</li>
                     <li><strong>Bibliothèques :</strong> Regroupent des fonctions/procédures ou variables prédéfinies compilées selon une thématique commune (ex : bibliothèque des fonctions mathématiques) pour faciliter le développement.</li>
@@ -164,16 +188,16 @@
             </section>
 
             <section id="types-noyaux">
-                <h1>Types de noyaux selon leur organisation</h1>
+                <h1>6. Types de noyaux selon leur organisation</h1>
                 
-                <table class="tableauNoyaux">
+                <table class="tableau_style">
                     <thead>
                         <tr>
                             <th>Type de noyau</th>
                             <th>Description</th>
                             <th>Avantages</th>
                             <th>Inconvénients</th>
-                            <th>Exemples concrets</th>
+                            <th>Exemples</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -182,43 +206,42 @@
                             <td>Un seul bloc exécutable généré à la compilation. Tout est soudé ensemble.</td>
                             <td>Simplicité, rapidité d'exécution, forte protection.</td>
                             <td>Nécessité d'inclure les pilotes &rArr; taille importante, mises à jour peu aisées, stabilité délicate, faille de sécurité &rArr; tout est menacé.</td>
-                            <td>Anciens systèmes (MS-DOS)</td>
+                            <td class="tab_exemple">Anciens systèmes (MS-DOS)</td>
                         </tr>
                         <tr>
                             <td><strong>Modulaire</strong></td>
                             <td>Un bloc principal de base + des extensions (modules/pilotes) chargés dynamiquement à la demande.</td>
                             <td>Simplicité, rapidité d'exécution, forte protection, plus de flexibilité matérielle.</td>
                             <td>Stabilité délicate (si un module planté s'exécute au niveau du cœur).</td>
-                            <td><strong>Linux Debian</strong>, <strong>Android</strong> (basé sur le noyau Linux)</td>
+                            <td class="tab_exemple">Linux Debian, Android (basé sur le noyau Linux)</td>
                         </tr>
                         <tr>
                             <td><strong>&mu;-noyau (Micro-noyau)</strong></td>
                             <td>Le noyau est réduit au strict minimum. Le maximum de fonctionnalités (pilotes, fichiers) est déporté au niveau utilisateur en petits blocs indépendants.</td>
                             <td>Facilité de développement, de maintenance, stabilité, faille de sécurité &ne; tout est menacé.</td>
                             <td>Goulot d'étranglement au niveau des communications internes, sécurité mal maîtrisée.</td>
-                            <td>MINIX, GNU Hurd, QNX</td>
+                            <td class="tab_exemple">MINIX, GNU Hurd, QNX</td>
                         </tr>
                         <tr>
                             <td><strong>Exo-noyau</strong></td>
                             <td>Tout ou presque est déporté au niveau utilisateur. Le noyau gère juste l'accès sécurisé aux ressources sans imposer d'abstraction.</td>
                             <td>Bonne performance (les applications accèdent directement au matériel).</td>
                             <td>Sécurité difficile à garantir.</td>
-                            <td>Systèmes de recherche (ExOS)</td>
+                            <td class="tab_exemple">Systèmes de recherche (ExOS)</td>
                         </tr>
                         <tr>
                             <td><strong>Hybride</strong></td>
                             <td>Structure intermédiaire : garde l'organisation découpée du micro-noyau, mais réintègre certaines fonctions critiques au niveau du noyau pour la vitesse.</td>
                             <td><strong>MAX</strong> d'avantages (vitesse et modularité).</td>
                             <td><strong>MIN</strong> d'inconvénients.</td>
-                            <td><strong>Windows 11</strong> (noyau NT), macOS (noyau XNU)</td>
+                            <td class="tab_exemple">Windows 11 (noyau NT), macOS (noyau XNU)</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-            <!-- SECTION : LES PROCESSUS -->
             <section id="les-processus">
-                <h1>Les processus</h1>
+                <h1>7. Les processus</h1>
 
                 <div class="definition-box">
                     <p><strong>Un processus &nbsp;=&nbsp; une exécution d’un programme</strong></p>
@@ -253,7 +276,6 @@
                 </ul>
             </section>
 
-            <!-- SECTION 8 : TABLE DES PROCESSUS -->
             <section id="table-processus">
                 <h1>8. Table des processus</h1>
                 
@@ -277,7 +299,6 @@
 
             </section>
 
-            <!-- SECTION 9 : REGIONS DES PROCESSUS -->
             <section id="regions-processus">
                 <h1>9. Régions des processus</h1>
 
@@ -321,7 +342,6 @@
                 </ul>
             </section>
 
-<!-- SECTION 10 : LES THREADS -->
             <section id="les-threads">
                 <h1>10. Les threads</h1>
                 
@@ -359,6 +379,689 @@
                 <p>Commandes utiles en TP - ls /proc/n/task - htop</p>
 
             </section>
+
+            <section id="task-diag-etat">
+                <h1>11. Diagramme d'états des tâches (Linux)</h1>
+                
+                <p>
+                    Sous Linux, le noyau traite les processus et les threads de la même manière : ce sont des <strong>tâches (tasks)</strong>. 
+                    Chaque tâche évolue dynamiquement entre plusieurs états au cours de son cycle de vie, en fonction des décisions de l'ordonnanceur (scheduler) et des ressources matérielles disponibles.
+                </p>
+
+
+                <figure class="picture">
+                    <img src="./res/Diagramme_etats.jpg">
+                    <figcaption style=>Figure 11.1 – Cycle de vie et transitions des états d'une tâche sous Linux.</figcaption>
+                </figure>
+
+                <h2>Description des différents états</h2>
+                <p>Voici l'explication détaillée de chaque état présent sur le diagramme</p>
+
+                <dl>
+                    <dt><dfn>Ready / Running (R)</dfn></dt>
+                    <dd>
+                        La tâche est soit en cours d'exécution sur un cœur de processeur (<strong>Running</strong>), soit totalement prête à être exécutée (<strong>Ready</strong>) et attend simplement que l'ordonnanceur lui attribue du temps CPU (lors d'une <em>élection</em>).
+                    </dd>
+
+                    <dt><dfn>Sleeping Interruptible (S)</dfn></dt>
+                    <dd>
+                        C'est l'état de sommeil le plus classique. La tâche est en attente d'une ressource, d'un événement (comme une saisie clavier ou une donnée réseau) ou d'une temporisation (<code>sleep</code>). Elle peut être réveillée à tout moment par un signal (<strong>wake_up</strong>).
+                    </dd>
+
+                    <dt><dfn>Sleeping Uninterruptible (D)</dfn></dt>
+                    <dd>
+                        La tâche est dans un sommeil profond et n'écoute aucun signal (elle ne peut pas être tuée immédiatement via <code>kill -9</code>). Cet état survient généralement lors d'opérations d'Entrées/Sorties (I/O) directes avec le matériel informatique, par exemple en attendant qu'un secteur de disque dur réponde.
+                    </dd>
+
+                    <dt><dfn>Sleeping Killable</dfn></dt>
+                    <dd>
+                        Similaire à l'état <em>Uninterruptible</em>, ce sommeil est utilisé pour des opérations système bloquantes, mais avec une tolérance : la tâche est configurée pour pouvoir être immédiatement interrompue et détruite si elle reçoit un signal fatal (comme une demande d'arrêt forcé du processus).
+                    </dd>
+
+                    <dt><dfn>Stopped (T)</dfn></dt>
+                    <dd>
+                        L'exécution de la tâche a été suspendue manuellement par un signal de contrôle (par exemple en appuyant sur <code>Ctrl+Z</code> dans le terminal, ce qui envoie le signal <code>SIGTSTP</code>). Elle attend un signal de reprise (<code>SIGCONT</code>) pour repasser à l'état <em>Ready</em>.
+                    </dd>
+
+                    <dt><dfn>Zombie (Z)</dfn></dt>
+                    <dd>
+                        La tâche a terminé son exécution (<strong>termination</strong>) et a libéré ses ressources, mais elle reste inscrite dans la table des processus du noyau. Elle attend que son processus parent lise son code de retour (via l'appel système <code>wait()</code>). Dès que le parent fait cette lecture, le zombie disparaît définitivement du système.
+                    </dd>
+                </dl>
+            </section>
+
+            <section id="ordonnancement">
+                <h1>12. L'Ordonnancement des Tâches sous Linux</h2>
+
+                <p>
+                    L'<strong>ordonnancement</strong> (ou <em>scheduling</em>) est le mécanisme par lequel le noyau Linux décide quelle tâche va s'exécuter sur le processeur (l'UC) à un instant donné, et pendant combien de temps. 
+                    Imaginez un système de files d'attente à plusieurs niveaux de priorité.
+                </p>
+
+                <!-- Bloc Concept Clé : Les Files Multiples -->
+                
+                    <h2>Le Principe : Les Files de Priorité</h2>
+                    <p>Le noyau gère un tableau de files d'attente indépendantes :</p>
+                    <ul>
+                        <li><strong>Des niveaux de priorité :</strong> Chaque file correspond à un niveau de priorité précis. Lors de sa création, une tâche reçoit sa priorité de départ selon sa catégorie.</li>
+                        <li><strong>Le sens de lecture :</strong> L'ordonnanceur parcourt toujours ces files dans l'ordre des numéros croissants (de la plus prioritaire à la moins prioritaire).</li>
+                        <li><strong>L'élection :</strong> Dès que l'ordonnanceur trouve une file qui contient des tâches prêtes (<em>ready</em>), la toute première tâche éligible en tête de file est choisie (on dit qu'elle est <strong>élue</strong>) pour occuper l'UC.</li>
+                    </ul>
+
+
+                <figure class="picture">
+                    <img src="./res/ordonnancement.jpg" alt="Schéma d'ordonnancement multi-files">
+                    <figcaption>Figure 12.1 – Structure des files d'attente de l'ordonnanceur (de rdy_head à rdy_tail).</figcaption>
+                </figure>
+
+                <h2>Explications</h2>
+
+                <ul class="tableau_court">
+                    <li>Les cases sont non numérotées sont des processus.</li>
+                    <li>Chaque processus a une priorité. Son numéro de priorité est celui marqué en haut de sa colonne.</li>
+                    <li>Ainsi, on peut marquer "1" dans toute la première colonne, "2" dans la deuxième, etc...</li>
+
+                </ul>
+
+                <ul>
+                    <li><strong>La ligne du haut : </strong>C'est un tableau de pointeurs. Chaque pointeur pointe vers le premier processus de sa file de priorité, celui juste en-dessous.</li>
+                    <li><strong>Les colonnes de processus : </strong>Tous les processus d'une même colonne ont la même priorité. Le premier processus (celui du haut) est pointé par le tableau <strong>rdy_tail</strong>. Il descendent, se pointent, sous forme de liste chaînée.</li>
+                    <li><strong>La ligne du bas : </strong>C'est aussi un tableau de pointeurs, qui pointent les derniers processus de chaque file. <strong> rdy_tail</strong> sert à éviter de parcourir toute la liste chaînée, pour aller plus vite.</li>
+                    <li><strong>Mécanisme : </strong>Le processus avec la croix est sur le point d'être élu. Il va donc disparaître, et le celui du bas prendra sa place. Les priorités de tous les autres processus seront recalculés, et donc il évoluent de droite à gauche, du bas vers le haut pour atteindre la case "X".</li>
+                </ul>
+
+                <h2>Les Règles de Vie d'une Tâche sur le Processeur</h2>
+                <p>Une fois qu'une tâche est élue, elle ne peut pas monopoliser l'UC indéfiniment. Le noyau applique des règles strictes pour partager équitablement le temps de calcul :</p>
+
+                <dl>
+                    <dt><dfn>Le Quantum de temps</dfn></dt>
+                    <dd>
+                        Chaque tâche dispose d'un temps d'exécution fixe au compteur appelé <strong>quantum</strong>. Elle garde l'UC jusqu'à ce que ce temps soit écoulé, sauf si elle est interrompue avant par un appel système ou une interruption matérielle.
+                    </dd>
+
+                    <dt><dfn>La Préemption</dfn></dt>
+                    <dd>
+                        Dès que le quantum expire, la tâche est <strong>préemptée</strong> (on lui retire de force le contrôle du CPU). Sa priorité est alors recalculée et revue à la baisse (elle est punie d'avoir été trop gourmande), puis elle est replacée tout au bout de sa nouvelle file de priorité (vers le <code>rdy_tail</code>).
+                    </dd>
+
+                    <dt><dfn>Le cas des Entrées/Sorties (E/S)</dfn></dt>
+                    <dd>
+                        Si une tâche libère d'elle-même l'UC parce qu'elle doit attendre une Entrée/Sortie (comme une lecture sur le disque ou une saisie utilisateur), le noyau est indulgent : <strong>sa priorité ne change pas</strong>. Dès que son E/S est terminée, elle revient dans sa file d'origine sans pénalité.
+                    </dd>
+                </dl>
+
+                <!-- Focus Linux / Temps Réel -->
+                <h2>Spécificités Linux : Les Classes d'Ordonnancement</h2>
+                <p>
+                    Linux trie ses tâches dans des catégories spéciales. Les deux premières files du tableau ont des règles du jeu totalement à part, réservées aux processus prioritaires :
+                </p>
+
+            <table class="tableau_style">
+                <thead>
+                    <tr>
+                        <th>Politique</th>
+                        <th>Description</th>
+                        <th>Avantages</th>
+                        <th>Inconvénients</th>
+                        <th>Exemples / Cas d'usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SCHED_FIFO</strong></td>
+                        <td>Politique temps-réel fixe. La tâche élue s'exécute sans limite de temps jusqu'à ce qu'elle se bloque d'elle-même ou qu'elle cède le processeur.</td>
+                        <td>Aucune perte de temps liée au changement de contexte, réactivité maximale.</td>
+                        <td>Risque majeur de famine : si une tâche a un bug, elle bloque définitivement tout le système.</td>
+                        <td class="tab_exemple">Tâches systèmes critiques de courte durée, pilotes industriels.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SCHED_RR</strong></td>
+                        <td>Politique temps-réel cyclique. Chaque tâche dispose d'un temps fixe (quantum). Si le temps expire, elle est préemptée mais replacée en fin de file.</td>
+                        <td>Équité parfaite entre les tâches de même priorité élevée, pas de blocage complet par une seule tâche.</td>
+                        <td>Légère perte de performance induite par les commutations régulières si le quantum est trop court.</td>
+                        <td class="tab_exemple">Applications multimédias interactives (traitement audio/vidéo en direct).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SCHED_OTHER</strong></td>
+                        <td>Politique standard par défaut sous Linux (temps partagé). Le noyau ajuste constamment les priorités en fonction de l'utilisation des ressources.</td>
+                        <td>Polyvalence totale, protection contre la famine, excellente gestion générale des ressources.</td>
+                        <td>Absolument aucun respect des contraintes de temps-réel (aucune garantie de temps de réponse).</td>
+                        <td class="tab_exemple">Applications standards : navigateur internet, terminal, programme C.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+                <div>
+                    💡 <strong>Astuce TP :</strong> Vous pouvez inspecter la politique d'ordonnancement et les détails d'un processus en cours d'exécution via la commande standard <code>ps</code>, ou en allant fouiller directement dans le système de fichiers virtuel du noyau à l'adresse <code>/proc/[PID]/</code>.
+                </div>
+            </section>
+
+            <section id="proc-attribut">
+
+                <h1>13. Les attributs d'un processus</h1>
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Attribut</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PID</td>
+                            <td>Identifie un processus de façon unique.</td>
+                        </tr>
+                        <tr>
+                            <td>PPID</td>
+                            <td>PID du processus père.</td>
+                        </tr>
+                        <tr>
+                            <td>UID réel (uid)</td>
+                            <td>Par défaut, correspond à l'UID réel du père sauf après un changement explicite (cf. <code>setuid(2)</code>).</td>
+                        </tr>
+                        <tr>
+                            <td>UID effectif (euid)</td>
+                            <td>Par défaut, correspond à l'UID effectif du père sauf après un changement explicite ou l'<code>exec</code> d'un fichier avec set-UID à 1.</td>
+                        </tr>
+                        <tr>
+                            <td>UID sauvegardé (suid)</td>
+                            <td>Par défaut, correspond à l'UID sauvegardé du père sauf après un changement explicite.</td>
+                        </tr>
+                        <tr>
+                            <td>GID (réel, effectif, sauvegardé)</td>
+                            <td>Identifiants de groupes (<code>gid</code>, <code>egid</code>, <code>sgid</code>), analogues aux trois UID décrits ci-dessus.</td>
+                        </tr>
+                        <tr>
+                            <td>Groupes supplémentaires</td>
+                            <td>Liste de groupes additionnels auxquels le processus appartient.</td>
+                        </tr>
+                        <tr>
+                            <td>PGID</td>
+                            <td>Identificateur de groupe de processus.</td>
+                        </tr>
+                        <tr>
+                            <td>SID</td>
+                            <td>Identificateur de session.</td>
+                        </tr>
+                        <tr>
+                            <td>Ordonnancement & Priorité</td>
+                            <td>Classe d'ordonnancement, priorité courante et valeur <em>nice</em> associée au processus.</td>
+                        </tr>
+                        <tr>
+                            <td>Terminal d'attachement</td>
+                            <td>Le terminal de contrôle auquel le processus est lié (s'il y en a un).</td>
+                        </tr>
+                        <tr>
+                            <td>Descripteurs de fichiers</td>
+                            <td>La table contenant les liens vers tous les fichiers actuellement ouverts par le processus.</td>
+                        </tr>
+                        <tr>
+                            <td>Répertoires de travail</td>
+                            <td>Le répertoire courant (d'exécution) et le répertoire racine (root) associés au processus.</td>
+                        </tr>
+                        <tr>
+                            <td>Valeur de umask</td>
+                            <td>Le masque de création de fichiers qui définit les permissions par défaut.</td>
+                        </tr>
+                        <tr>
+                            <td>Ressources & Signaux</td>
+                            <td>Masque et disposition de signaux, signaux pendants, verrous, sémaphores et segments de mémoire partagés.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Le mécanisme de sécurité des trois UID (User IDs)</h2>
+                <p>
+                    Sous Linux, la sécurité et la gestion des privilèges reposent sur un trio d'identifiants complémentaires associés à chaque processus. 
+                    L'<strong>UID réel</strong> (<code>uid</code>) représente l'identité véritable de l'utilisateur qui a démarré le programme. 
+                    L'<strong>UID effectif</strong> (<code>euid</code>) détermine les droits d'accès réels et actuels du processus face au noyau ; il peut être temporairement modifié (par exemple à <code>0</code> pour root) lors de l'exécution d'un fichier doté du bit <em>set-UID</em> comme <code>passwd</code> ou <code>ping</code>. 
+                    Enfin, l'<strong>UID sauvegardé</strong> (<code>suid</code>) fait office de copie de sécurité du privilège initial, permettant au processus d'appliquer le principe du moindre privilège : il peut ainsi abandonner ses droits élevés pour s'exécuter de manière sûre, tout en conservant la possibilité de récupérer son costume de super-utilisateur en cas de besoin absolu au cours de son cycle de vie.
+                </p>
+            </section>
+
+            <section id="appel-sys"></section>
+
+            <h1>14. Les appels système</h1>
+
+            <table class="tableau_style">
+                <thead>
+                    <tr>
+                        <th>Appel système / Fonction</th>
+                        <th>Type de routine</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>brk(2), sbrk(2)</td>
+                        <td>Appels système</td>
+                        <td>Permettent l'extension ou la diminution de la taille de la région des données (le segment de données) du processus.</td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>clone(2)</td>
+                        <td>Appel système</td>
+                        <td>Création d'un thread. C'est l'appel système sous-jacent à la gestion des processus légers sous Linux.</td>
+                    </tr>
+                    <tr>
+                        <td>exec(2)</td>
+                        <td>Appel système</td>
+                        <td>Chargement d'un nouveau programme dont l'exécution vient se substituer intégralement au processus en cours.</td>
+                    </tr>
+                    <tr>
+                        <td>fork(2)</td>
+                        <td>Appel système</td>
+                        <td>Création d'une copie conforme du processus courant. L'original est appelé le <em>père</em> et la copie est le <em>fils</em>.</td>
+                    </tr>
+                    <tr>
+                        <td>wait(2)</td>
+                        <td>Appel système</td>
+                        <td>Assure la synchronisation du processus père sur la fin (la terminaison) de l'un de ses fils.</td>
+                    </tr>
+                    <tr>
+                        <td>exit(3)</td>
+                        <td>Fonction de bibliothèque (API)</td>
+                        <td>Provoque la terminaison propre du processus en cours.</td>
+                    </tr>
+                    <tr>
+                        <td>pthread_create(3)</td>
+                        <td>Fonction de bibliothèque (API)</td>
+                        <td>Permet la création d'un thread en offrant davantage de paramètres de configuration. Elle s'appuie en interne sur <code>clone(2)</code>.</td>
+                    </tr>
+                        <td>Gestion des signaux</td>
+                        <td>Appels système dédiés</td>
+                        <td>Routines de gestion des signaux, notamment <code>kill(2)</code> pour l'envoi, ainsi que <code>signal(2)</code> et <code>sigaction(2)</code> pour leur interception.</td>
+                    </tr>
+                    <tr>
+                        <td>Communication (IPC)</td>
+                        <td>Appels système dédiés</td>
+                        <td>Outils et routines assurant la communication inter-processus (tubes, segments partagés, etc.).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Note :  (2) = appels système , (3) = fonctions de bibliothèques</p>
+
+            <h2>Appels systèmes et fonctions de bibliothèques</h2>
+
+            <p>La différence réside dans qui exécute le code et où il est exécuté</p>
+
+            <ul>
+                <li><strong>Appel système : </strong>Fonction directement exécutée par le noyau (Ring 0). Le programme utilisateur n'a pas le droit d'accéder directement au matériel (DD, RAM, carte Réseau). Il doit donc passer par un appel système.</li>
+                <li><strong>Fonction de bibliothèque : </strong>Code pré-écrit qui s'exécute entièrement dans l'espace user (Ring 3).</li>
+            </ul>
+
+            <section id="cmd-proc">
+
+            <table class="tableau_style">
+                <thead>
+                    <tr>
+                        <th>Commande</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ps</td>
+                        <td>Permet de lister des tâches avec certains attributs.</td>
+                    </tr>
+                    <tr>
+                        <td>top</td>
+                        <td>Affichage dynamique des tâches en cours d'exécution.</td>
+                    </tr>
+                    <tr>
+                        <td>pstree</td>
+                        <td>Affichage de l'arbre de filiation des processus.</td>
+                    </tr>
+                    <tr>
+                        <td>strace</td>
+                        <td>Monitoring des appels système d'un processus.</td>
+                    </tr>
+                    <tr>
+                        <td>vmstat</td>
+                        <td>Affiche les informations sur l'activité en mémoire virtuelle.</td>
+                    </tr>
+                    <tr>
+                        <td>lsof</td>
+                        <td>Affichage des informations sur les fichiers ouverts par divers processus.</td>
+                    </tr>
+                    <tr>
+                        <td>fuser</td>
+                        <td>Affichage des informations sur les processus accédant à un fichier.</td>
+                    </tr>
+                    <tr>
+                        <td>kill</td>
+                        <td>Envoi d'un signal à un processus.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Exemple de strace avec fprint()</h2>
+
+            <p>Voici ce que rend la commande strace quand on exécute un programme en C qui se contente de faire un printf()</p>
+
+            <table class="tableau_style">
+                <thead>
+                    <tr>
+                        <th>Étape de la trace</th>
+                        <th>Appel Système</th>
+                        <th>Description de ce que fait Linux</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Début du programme</td>
+                        <td><strong>execve</strong></td>
+                        <td>Le noyau charge ton exécutable <code>./printf</code> en mémoire pour lancer le processus.</td>
+                    </tr>
+                    <tr>
+                        <td>Configuration initiale</td>
+                        <td><strong>brk / mmap</strong></td>
+                        <td>Le système alloue l'espace mémoire de base et charge la bibliothèque C (<code>libc.so.6</code>).</td>
+                    </tr>
+                    <tr>
+                        <td>Identification</td>
+                        <td><strong>set_tid_address</strong></td>
+                        <td>Le noyau attribue l'identifiant unique (TID 3840) au processus principal.</td>
+                    </tr>
+                    <tr>
+                        <td>L'exécution du printf</td>
+                        <td><strong>write</strong></td>
+                        <td>La fonction <code>printf</code> passe par le noyau pour écrire les 27 caractères du texte sur le terminal.</td>
+                    </tr>
+                    <tr>
+                        <td>Fin du programme</td>
+                        <td><strong>exit_group</strong></td>
+                        <td>Le processus se termine proprement en renvoyant le code de succès <code>0</code> au système.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a class="link_contenu" href="./res/strace.jpg">Détails de la commande strace</a>
+
+            </section>
+
+            <section id="exclusion">
+
+                <h1>16. Exclusion mutuelle</h1>
+                <h2>1. Le Problème : L'Exclusion Mutuelle</h2>
+                <p>
+                    Dans un système concurrent (multi-processus ou multi-threads), certaines ressources ne doivent pas être partagées simultanément. 
+                    Le cas classique est le problème des <strong>Lecteurs et Écrivains</strong> :
+                </p>
+                <ul>
+                    <li>Si plusieurs processus écrivent en même temps au même endroit d'un fichier, les données deviennent incohérentes.</li>
+                    <li>Si un processus lit un fichier pendant qu'un autre y écrit, le résultat de la lecture sera erroné.</li>
+                </ul>
+
+                <p>
+                    <strong>Section Critique : </strong>C'est la portion de code d'un programme qui accède à une ressource partagée de façon exclusive. 
+                    L'objectif d'une bonne programmation système est de réduire au maximum la taille et le temps passé dans cette section critique afin de ne pas bloquer les autres processus.
+                </p>
+
+                <h2>2. Les Solutions d'Accès</h2>
+                <p>Pour contrôler l'accès à une section critique, il existe deux grandes familles de solutions :</p>
+                <ul>
+                    <li><strong>Solutions logicielles :</strong> Algorithmes complexes (Dekker, Peterson, la boulangerie de Lamport) qui permettent d'aborder les notions d'interblocages (deadlocks), de famine et d'équité.</li>
+                    <li><strong>Solutions matérielles :</strong> Reposent sur des instructions machines indivisibles appelées <strong>appels atomiques</strong>. C'est ce qui permet de bâtir les outils comme les <strong>sémaphores</strong> et les <strong>moniteurs</strong>.</li>
+                </ul>
+
+                <h2>3. L'Outil : Les Sémaphores</h2>
+                <p>
+                    Un sémaphore (noté <strong>S</strong>) est une variable entière positive partagée. On ne peut la manipuler qu'à travers deux primitives atomiques fondamentales :
+                </p>
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Opération</th>
+                            <th>Action sur le Sémaphore</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>P(S)</strong></br> (ou <em>wait</em>)</td>
+                            <td>Décrémente le sémaphore si sa valeur est &gt; 0. Si la valeur est à 0, le processus appelant est bloqué et mis dans une file d'attente (gérée en FIFO) en attendant qu'elle redevienne positive.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>V(S)</strong></br> (ou <em>signal/post</em>)</td>
+                            <td>Incrémente le sémaphore. Si un processus attendait dans la file, il est réveillé.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><em>À la création, une valeur initiale strictement positive est affectée au sémaphore. Elle représente le nombre maximal d'accès simultanés autorisés à la ressource.
+                        Si le sémaphore vaut 1, un seul processus pourra y accéder.
+                </em></p>
+
+                <p><strong>Le cas de l'exclusion mutuelle :</strong> Pour interdire à plus d'un processus à la fois d'entrer en section critique, on initialise le sémaphore à **1**. Le premier qui fait <code>P(S)</code> passe (le sémaphore tombe à 0), les suivants restent bloqués à l'entrée jusqu'à ce que le premier sorte et fasse <code>V(S)</code>.</p>
+
+
+                <h2>4. Implémentation sous Linux (Norme POSIX)</h2>
+                <p>En C sous Linux, les opérations théoriques correspondent à des fonctions précises de la bibliothèque standard :</p>
+                <ul>
+                    <li><code>sem_open(3)</code> : Permet de créer ou d'ouvrir un sémaphore.</li>
+                    <li><code>sem_wait(3)</code> : Équivalent à l'opération de verrouillage/décrémentation <strong>P</strong>.</li>
+                    <li><code>sem_post(3)</code> : Équivalent à l'opération de libération/incrémentation <strong>V</strong>.</li>
+                </ul>
+                <p class="note-bas-page">
+                    <em>Note : Il existe également une interface historique de plus bas niveau via les appels système direct du noyau : <code>semget(2)</code>, <code>semctl(2)</code> et <code>semop(2)</code>.</em>
+                </p>
+
+            </section>
+
+            <section id="interlock">
+
+                <h1>17. Interblocages (deadlock)</h1>
+                <p>
+                    Un interblocage se produit lorsque plusieurs processus s’attendent mutuellement.</br>
+                    Chaque processus détient une ressource et attend une autre ressource bloquée par un autre processus, ce qui fige complètement l'exécution du programme.
+                </p>
+
+                <h2>L'exemple classique des 2 processus</h2>
+                <p>Imagine deux processus (A et B) qui ont tous les deux besoin de deux sémaphores (S1 et S_2) pour terminer leur travail :</p>
+
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Processus A</th>
+                            <th>Processus B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>P<sub> S1</sub> : Il demande l'accès à la sc 1</td>
+                            <td>P<sub> S2</sub></td>
+                        </tr>
+                        <tr>
+                            <td>Entre dans la section critique 1</td>
+                            <td>Entre dans la section critique 2</td>
+                        </tr>
+                        <tr>
+                            <td>...exécute son code</td>
+                            <td>...exécute son code</td>
+                        </tr>
+                        <tr>
+                            <td>P<sub> S2</sub> : Il demande l'accès à la sc 2</td>
+                            <td>P<sub> S1</sub></td>
+                        </tr>
+                        <tr>
+                            <td>...<strong>bloqué</strong> : la sc 2 est occupée par le processus B</td>
+                            <td>...<strong>bloqué</strong> : la sc 1 est occupée par le processus A</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Situation de blocage total :</strong> Le processus A ne relâchera jamais S1 tant qu'il n'aura pas obtenu S2. 
+                    Le processus B ne relâchera jamais S2 tant qu'il n'aura pas obtenu S1. Le système est figé à jamais.
+                </p>
+
+                <h2>Les Stratégies de Résolution</h2>
+                <p>Il existe trois grandes approches pour gérer ce problème :</p>
+                
+                <ul>
+                    <li>
+                        <strong>La prévention (au niveau du programmeur) :</strong> 
+                        Il s’agit de concevoir des stratégies de programmation des processus, comme par exemple imposer une <em>demande ordonnée d'accès aux ressources</em>. Si A et B demandent toujours les sémaphores dans le même ordre ($S_1$ puis $S_2$), l'interblocage devient impossible.
+                    </li>
+                    <li>
+                        <strong>La détection et reprise (au niveau du noyau) :</strong> 
+                        Le système d'exploitation surveille les blocages et intervient (par exemple en tuant un processus) si un deadlock est détecté. Cette méthode a un <em>coût élevé</em> en ressources.
+                    </li>
+                    <li>
+                        <strong>L'évitement (au niveau du noyau) :</strong> 
+                        Le noyau analyse dynamiquement chaque demande de ressource pour vérifier si elle risque de mener à un état dangereux. Cela engendre un <em>coût moyen mais une surcharge permanente</em> du système.
+                    </li>
+                </ul>
+                <p><strong>Le comportement de Linux :</strong> Par défaut, le noyau Linux <em>n’implémente pas</em> ces techniques de détection ou d'évitement au niveau du noyau. C'est donc au <strong>programmeur</strong> d'être vigilant et d'appliquer de bonnes pratiques de prévention lors de la manipulation des sémaphores.</p>
+            </section>
+       
+            <section id="memoire-intro">
+                <h1>1. Présentation</h1>
+
+                <h2>Pagination et segmentation</h2>
+                <ul>
+                    <li><strong>Pagination :</strong> Découpe la mémoire vive en blocs de taille fixe (généralement 4 Ko) appelés <em>cadres de pages</em> Les programmes manipulent des pages de même taille. Cette approche engendre de la <strong>fragmentation interne</strong>, car la dernière page d'une région n'est souvent pas complètement remplie.</li>
+                    <li><strong>Segmentation :</strong> Découpe la mémoire en morceaux de tailles variables correspondants aux structures logiques du programme. Elle engendre de la <strong>fragmentation externe</strong>, laissant des espaces vides inutilisables entre les segments si la mémoire n'est pas paginée.</li>
+                </ul>
+
+                <h2>Mémoire virtuelle</h2>
+                <p>
+                    Le système crée l'illusion d'un espace mémoire beaucoup plus vaste que la RAM physique disponible. Cela permet à chaque tâche/processus de manipuler un espace d'adressage simple et continu, peu importe l'emplacement réel de ses données dans les cases physiques de la RAM.
+                </p>
+
+                <h2>Protection de la mémoire</h2>
+                <p>
+                    La gestion de la mémoire assure qu'un processus ne peut pas lire, écrire ou exécuter du code en dehors des droits qui lui ont été explicitement attribués pour une zone donnée.
+                </p>
+            </section>
+
+            <section id="ram">
+                <h1>2. La RAM (Random Access Memory)</h1>
+
+                <p>
+                    Les instructions du processeur (chargement, écriture, sauts, pile) font constamment référence à des adresses mémoire. La capacité d'adressage dépend directement de l'architecture du CPU :
+                </p>
+                <ul>
+                    <li><strong>Architecture 32 bits :</strong> Le CPU peut adresser un maximum de <strong>4 Go</strong> de RAM.</li>
+                    <li><strong>Architecture 64 bits :</strong> La limite théorique grimpe à <strong>16 Exaoctets</strong> (soit 1,84 &times; 10<sup>19</sup> octets).</li>
+                </ul>
+
+                <h2>Pourquoi la limite est de 4 Go en 32 bits ?</h2>
+                <p>
+                    C'est une pure contrainte logique et matérielle basée sur le calcul mathématique des <strong>arrangements avec répétition</strong> (les suites de $p$ éléments parmi $n$). 
+                    Chaque bit d'adresse possède 2 états possibles (<code>0</code> ou <code>1</code>). Un registre de 32 bits permet donc d'obtenir :
+                </p>
+                <div class="definition-box">
+                    <p>
+                        2<sup>32</sup> = 4 294 967 296 combinaisons d'adresses uniques.
+                    </p>
+                </div>
+                <p>
+                    Comme le matériel informatique applique un adressage <strong>par octet</strong> (chaque adresse pointe vers une case de 8 bits), ces 4,29 milliards de combinaisons correspondent exactement à <strong>4 Gigaoctets</strong> de mémoire physique qu'il est possible de nommer. 
+                    Si on adressait la mémoire bit par bit, ces mêmes combinaisons ne permettraient de couvrir que 4 Gigabits (soit à peine 512 Mo de RAM).
+                </p>
+
+                <h2>Culture G informatique : Repères et Rétrogaming</h2>
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Repère historique ou Matériel</th>
+                            <th>Architecture / Date</th>
+                            <th>Capacité ou Précision</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Invention de la RAM moderne (DRAM)</strong></td>
+                            <td>Inventée en <strong>1966</strong> par Robert Dennard chez IBM</td>
+                            <td>La puce initiale d'Intel ne pouvait stocker que 1024 bits (1 Kb).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Console NES</strong></td>
+                            <td>Architecture <strong>8 bits</strong><br> (Processeur Ricoh 2A03)</td>
+                            <td>Une architecture 8 bits génère 2<sup>8</sup> = 256 adresses de base. Grâce à des extensions, elle gérait 2 Ko de RAM de travail.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Amstrad CPC 464</strong></td>
+                            <td>Architecture <strong>8 bits</strong><br> (Processeur Zilog Z80A)</td>
+                            <td>Générait des adresses sur 16 bits en interne pour pouvoir adresser ses mythiques 64 Ko de mémoire RAM. 2^16 = 65 536 octets, divisé par 1024 octets = 64 Ko</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="adresses-virtuelles">
+                <h1>3. Les adresses virtuelles</h1>
+
+                <h2>Le concept de Régions sous Linux</h2>
+                <p>
+                    Plutôt que d'exposer la mémoire physique directe, Linux découpe l'espace d'un processus en <strong>régions</strong>. <br>À l'intérieur d'une région, le programme manipule des adresses virtuelles locales allant de <code>0</code> à <code>taille de la région - 1</code>.
+                </p>
+
+                <h2>Représentation des adresses éloignées</h2>
+                <p>
+                    Lorsque les adresses sont éloignées, elles sont structurées et représentées sous la forme d'un couple <strong>(r, a<sub>r</sub>)</strong> où :
+                </p>
+                <ul>
+                    <li><strong>r :</strong> représente le numéro ou l'identifiant unique de la région entière. Il cible une structure logique complète du processus (ex: Code, Données globales, Pile, Tas). <br>Le sélecteur <strong>r</strong> ne peut pas cibler la moitié d'une région, il désigne une frontière stricte.</li>
+                    <li><strong>a<sub>r</sub> :</strong> correspond à l'adresse locale (le déplacement ou <em>offset</em>) calculée à l'intérieur de cette région spécifique. Il commence toujours à <code>0</code> au début de la région concernée.</li>
+                </ul>
+
+                <h2>Exemple concret d'application</h2>
+                <p>
+                    Imaginons un programme où Linux a défini les identifiants logiques suivants :
+                </p>
+                <ul>
+                    <li><strong>Région 1 :</strong> Zone de Code (Text) &rarr; Droits : Lecture / Exécution (<code>r-x</code>).</li>
+                    <li><strong>Région 2 :</strong> Zone des Données (Data) &rarr; Droits : Lecture / Écriture (<code>rw-</code>).</li>
+                </ul>
+                
+                <p> Lors de l'exécution, le processeur utilise ces couples pour segmenter ses accès :</p>
+                <ul>
+                    <li><strong>(1, 500) :</strong> Pointe vers une instruction située 500 octets après le début de la région <strong>Code</strong>. Le CPU autorise l'exécution.</li>
+                    <li><strong>(2, 64) :</strong> Pointe vers une variable globale située 64 octets après le début de la région <strong>Données</strong>. Le CPU autorise la modification de la variable.</li>
+                </ul>
+
+                <h2>Intérêt majeur : La protection de la mémoire</h2>
+                <p>
+                    Ce système basé sur le couple <strong>(r, a<sub>r</sub>)</strong> sert de fondement à la sécurité. Le système d'exploitation associe des droits d'accès à la région <strong>r</strong> tout entière.<br>Si un processus tente une action interdite (par exemple, écrire à l'adresse <code>(1, 500)</code> dans la zone de code), le noyau intercepte immédiatement la requête et lève une exception matérielle de type <strong>Segmentation Fault</strong>.
+                </p>
+            </section>
+
+            <section id="creation-region-executable">
+                <h1>4. Création d'une région à partir d'un exécutable</h1>
+
+                <h2>Structure d'un fichier binaire exécutable</h2>
+                <p>
+                    Un fichier exécutable sur le disque contient plusieurs informations lues par le noyau pour instancier un processus :
+                </p>
+                <ul>
+                    <li><strong>L'en-tête du fichier :</strong> Toujours placé au début, il décrit la structure globale et les attributs du fichier.</li>
+                    <li><strong>L'en-tête du programme :</strong> Indique au noyau comment créer le processus à partir du fichier.</li>
+                    <li><strong>La table d'en-tête de section :</strong> Résume les différentes sections du fichier.</li>
+                    <li><strong>Les sections :</strong> Contiennent le code exécutable (<em>text</em>) et les données initialisées (<em>data</em>).</li>
+                </ul>
+                <blockquote>
+                    <strong>Note :</strong> Des outils comme <code>objdump</code> et <code>readelf</code> permettent d'explorer et de désassembler ces structures.
+                </blockquote>
+
+                <h2>Adresses virtuelles dans l'exécutable &amp; Chargement</h2>
+                <p>
+                    Lors de la compilation et de l'édition des liens, les futures régions standards (<em>text, data, BSS, stack, heap</em>) sont déjà numérotées, et leurs adresses internes sont codées sous la forme <strong>(r, a<sub>r</sub>)</strong>.
+                </p>
+                <p>
+                    En revanche, les zones qui n'apparaissent qu'en cours de route (bibliothèques dynamiques, mémoire partagée, projections <code>mmap</code>) sont notées sous forme symbolique. Lors de l'appel système <code>exec</code>, le noyau réorganise la table des régions, crée celles prévues et met à jour le compteur du processus.
+                </p>
+
+                <h2>Création d'une région à proprement parler</h2>
+                <p>
+                    Si le processus rencontre une référence symbolique (ex: appel à une bibliothèque dynamique) ou fait un appel système explicite (<code>mmap</code>, <code>shmget</code>), une nouvelle région est créée. 
+                    Le noyau ajoute une ligne à l'indice <strong>r<sub>max</sub></strong> dans la table des régions du processus, incrémente <strong>r<sub>max</sub></strong> et remplace la référence symbolique par le couple <strong>(r, a<sub>r</sub>)</strong> final.
+                </p>
+            </section>
+
+
+
 
         </div>      <!-- Fin div Le Cours -->
     </div>
