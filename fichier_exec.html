@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>OS2</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script defer src="java.js"></script>
+</head>
+
+<body>
+
+    <section id="analyse-en-tete-elf">
+    <h1>Analyse en-tête de fichier</h1>
+    
+    <p>L'utilisation de la commande <code>readelf -h</code> sur un binaire (ici l'exécutable <code>printf</code>) permet d'extraire les métadonnées de structure lues par le noyau lors de l'appel système <code>exec</code>.</p>
+    <p><strong>ELF : </strong>Executable and Linkable Format (Format d'exécutable et de liaison).</p>
+
+    <div class="picture">
+        <img src="./res/readelf-header.jpg" alt="readelf"/>
+    </div>
+
+    <h2>La structure de l'en-tête</h2>
+    <ul>
+        <li>
+            <strong>Le nombre magique (Magic) :</strong> Les premiers octets <code>7f 45 4c 46</code> décrivent la signature du fichier (les caractères ASCII pour <em>.ELF</em>). Elle permet au noyau de valider instantanément le format du fichier binaire.
+        </li>
+        <li>
+            <strong>La classe et les données (Class &amp; Data) :</strong> Le type <code>ELF64</code> indique une architecture 64 bits native. Le codage en <em>little endian</em> spécifie que l'octet de poids faible est stocké en premier en mémoire (standard des architectures x86_64).
+        </li>
+        <li>
+            <strong>Le type de fichier (Type) :</strong> Identifié comme <code>DYN (Position-Independent Executable)</code>. Cela signifie que le binaire supporte l'ASLR (Address Space Layout Randomization) : le noyau peut charger ses régions à des adresses virtuelles aléatoires à chaque exécution pour des raisons de sécurité.
+        </li>
+        <li>
+            <strong>L'adresse du point d'entrée (Entry point address) :</strong> Fixée à <code>0x1050</code>. Il s'agit de l'offset de la première instruction exécutée par le processeur (la routine système <code>_start</code>), calculé relativement à l'adresse de base injectée en mémoire.
+        </li>
+        <li>
+            <strong>Les en-têtes de programme (Program Headers) :</strong> Le fichier contient <code>14</code> en-têtes de programme. Ce sont ces structures spécifiques qui dictent au noyau comment segmenter le fichier pour instancier et mapper les différentes régions mémoire du processus.
+        </li>
+    </ul>
+
+    <blockquote>
+        <strong>Rappel de cours :</strong> Les en-têtes de programme décrivent les <em>segments</em> (la vue d'exécution du noyau), tandis que les en-têtes de section décrivent les <em>sections</em> (la vue de liaison pour le compilateur).
+    </blockquote>
+</section>
+
+<section id="analyse-segments-elf">
+
+
+    <h1>Analyse des En-têtes de Programme (Program Headers)</h1>
+    
+    <p>
+        La commande <code>readelf -l</code> permet d'observer la vue d'exécution (<em>Execution View</em>) du fichier binaire. Elle liste les <strong>segments</strong> que le chargeur du noyau (<em>kernel loader</em>) va directement projeter (mapper) dans l'espace d'adressage virtuel du processus.
+    </p>
+
+    <div class="picture">
+        <img src="./res/readelf-l.jpg" alt="readelf"/>
+    </div>
+
+
+    <h2>1. Éléments fondamentaux de l'en-tête</h2>
+    <ul>
+        <li>
+            <strong>L'interprète du programme (INTERP) :</strong> Le binaire demande explicitement l'utilisation de <code>/lib64/ld-linux-x86-64.so.2</code>. C'est le <strong>lieur dynamique</strong> (<em>dynamic linker</em>) chargé de trouver et de charger en mémoire les bibliothèques partagées (comme la <code>libc</code> pour le <code>printf</code>) au démarrage du programme.
+        </li>
+        <li>
+            <strong>Les segments de type LOAD :</strong> Ce sont les seuls segments qui sont réellement copiés du fichier vers la mémoire RAM. On en distingue quatre ici, chacun ayant un rôle et des privilèges spécifiques.
+        </li>
+    </ul>
+
+    <h2>2. Focus sur les segments LOAD et leurs permissions (Flags)</h2>
+    <p>
+        L'analyse des drapeaux (<strong>Flags</strong>) montre une stricte séparation des privilèges en mémoire pour des raisons de sécurité :
+    </p>
+    
+    <table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="padding: 8px;">Segment</th>
+                <th style="padding: 8px;">Drapeaux (Flags)</th>
+                <th style="padding: 8px;">Rôle &amp; Sections incluses</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 8px;"><strong>LOAD 0</strong></td>
+                <td style="padding: 8px;"><code>R</code> (Read Only)</td>
+                <td style="padding: 8px;">Contient les métadonnées initiales, la table des symboles dynamiques et les structures de relocalisation.</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px;"><strong>LOAD 1</strong></td>
+                <td style="padding: 8px;"><code>R E</code> (Read &amp; Execute)</td>
+                <td style="padding: 8px;"><strong>Le segment Text (Code) :</strong> Reçoit les sections <code>.text</code> (le code machine de tes fonctions) et <code>.init</code>. Il est exécutable mais protégé contre l'écriture pour éviter qu'un exploit ne modifie le code à la volée.</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px;"><strong>LOAD 2</strong></td>
+                <td style="padding: 8px;"><code>R</code> (Read Only)</td>
+                <td style="padding: 8px;"><strong>Le segment Data non modifiable :</strong> Reçoit notamment la section <code>.rodata</code> (Read-Only Data) où sont stockées tes chaînes de caractères littérales (ex: le texte à l'intérieur de tes <code>printf("...")</code>).</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px;"><strong>LOAD 3</strong></td>
+                <td style="padding: 8px;"><code>R W</code> (Read &amp; Write)</td>
+                <td style="padding: 8px;"><strong>Le segment Data modifiable :</strong> Reçoit les sections <code>.data</code> (variables globales initialisées) et <code>.bss</code> (variables globales non initialisées). Il autorise l'écriture mais interdit strictement l'exécution (non exécutable).</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Sécurité additionnelle</h2>
+    <ul>
+        <li>
+            <strong>GNU_STACK :</strong> Marqué en <code>RW</code> (lecture/écriture seule, pas de <code>E</code>). Cela signifie que la <strong>Pile (Stack)</strong> du processus n'est pas exécutable, bloquant ainsi les attaques classiques par injection de code de type <em>buffer overflow</em>.
+        </li>
+        <li>
+            <strong>GNU_RELRO :</strong> Demande au noyau de marquer certaines sections de données en lecture seule une fois que le lieur dynamique a fini de résoudre les adresses des fonctions au démarrage (sécurisation de la table <code>.got</code>).
+        </li>
+    </ul>
+
+    <blockquote>
+        <strong>Résumé de la correspondance Sections ➔ Segments :</strong> La seconde partie de la commande (<em>Section to Segment mapping</em>) prouve que le compilateur regroupe des dizaines de <strong>sections</strong> de code ou de données similaires au sein d'un seul et unique <strong>segment</strong> logique afin de faciliter le travail de mapping du noyau Linux.
+    </blockquote>
+</section>
+
+
+
+</body>
+</html>

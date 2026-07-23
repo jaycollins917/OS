@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche de Révision : Décoder htop & le Système</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #16a085;
+        }
+        .img-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #000;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 0.85em;
+            font-weight: bold;
+            border-radius: 4px;
+            color: white;
+        }
+        .bg-ram { background-color: #27ae60; }
+        .bg-disk { background-color: #e67e22; }
+        .bg-cpu { background-color: #9b59b6; }
+        .bg-core { background-color: #2c3e50; }
+        blockquote {
+            background: #ecf0f1;
+            border-left: 5px solid #3498db;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f1c40f;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Analyse de l'Activité Système : Décoder <code>htop</code></h1>
+
+    <div class="img-container">
+        <!-- Remplace htop.png par le nom réel de ton image si nécessaire -->
+        <img src="./res/htop.png" alt="Capture d'écran de htop">
+    </div>
+
+    <blockquote>
+        &#x2705; <strong>Note de révision :</strong> Ce tableau dynamique n'est pas magique. Le noyau Linux stocke toutes ces métriques en RAM dans la <strong>Table des Processus</strong> (via des structures complexes en C nommées <code>task_struct</code>). L'utilitaire <code>htop</code> ne fait que lire le système de fichiers virtuel <code>/proc</code> pour extraire et afficher ces données en temps réel.
+    </blockquote>
+
+    <h2>1. Décryptage de l'Entête (Le Matériel global)</h2>
+    <p>La section supérieure gauche et droite donne une vue instantanée des ressources physiques de la machine :</p>
+    <ul>
+        <li>&#x1F449; <strong>CPU [|||||   5.1%] :</strong> Pourcentage d'utilisation du processeur par l'<strong>Unité de Contrôle (UC)</strong> et l'<strong>UAL</strong>. Les barres colorées indiquent le type de charge (ex: processus utilisateurs vs tâches noyau).</li>
+        <li>&#x1F449; <strong>Mem [||||||... 995M/3.83G] :</strong> Consommation de la <strong>RAM</strong> physique. Ici, environ 995 Mo sont occupés sur les 3,83 Go alloués (par exemple via VirtualBox).</li>
+        <li>&#x1F449; <strong>Swp [0K/1.33G] :</strong> Utilisation de la <strong>zone de swap</strong> sur le disque dur. Elle est ici à <strong>0</strong> car la RAM physique n'est pas saturée. Le noyau n'a donc pas activé son algorithme de remplacement pour chasser des pages vers la mémoire de masse.</li>
+        <li>&#x1F449; <strong>Tasks, thr, kthr :</strong> Statistiques globales de la table des processus (109 processus au total, 344 threads légers, 68 threads noyau, et <code>1 running</code> : un seul processus occupe le CPU à cet instant t).</li>
+        <li>&#x1F449; <strong>Load average :</strong> Charge moyenne du système calculée sur 1, 5 et 15 minutes.</li>
+        <li>&#x1F449; <strong>Uptime :</strong> Temps écoulé depuis le démarrage de la machine (ici 13 minutes et 6 secondes).</li>
+    </ul>
+
+    <h2>2. Guide des Colonnes de la Table des Processus</h2>
+    <p>Chaque ligne du tableau correspond à une entrée active de la table des processus du noyau.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Colonne</th>
+                <th>Type de composant</th>
+                <th>Signification et Rôle Système</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>PID</strong></td>
+                <td><span class="badge bg-core">OS / Noyau</span></td>
+                <td><em>Process Identifier</em>. Numéro unique attribué par le noyau dans la table des processus lors d'un <code>fork</code>. Le <strong>PID 1</strong> correspond toujours à <code>init</code> (ou systemd), le premier processus lancé.</td>
+            </tr>
+            <tr>
+                <td><strong>USER</strong></td>
+                <td><span class="badge bg-core">OS / Noyau</span></td>
+                <td>Le propriétaire du processus (ex: <code>root</code>). Détermine les droits d'accès mémoire et fichiers.</td>
+            </tr>
+            <tr>
+                <td><strong>PRI & NI</strong></td>
+                <td><span class="badge bg-cpu">CPU / Scheduler</span></td>
+                <td>Priorité interne du noyau (<code>PRI</code>) et valeur de courtoisie (<code>NI</code> / Nice). Utilisées par l'ordonnanceur pour attribuer plus ou moins de tranches de temps CPU au processus.</td>
+            </tr>
+            <tr>
+                <td><strong>VIRT</strong></td>
+                <td><span class="badge bg-ram">Mémoire Virtuelle</span></td>
+                <td><strong>Taille totale de l'espace d'adressage virtuel</strong>. C'est l'ensemble des segments/régions (Code, Données, Pile) que le processus <em>croit</em> posséder. Comprend le code non chargé et les bibliothèques partagées.</td>
+            </tr>
+            <tr>
+                <td><strong>RES</strong></td>
+                <td><span class="badge bg-ram">RAM Physique</span></td>
+                <td><em>Resident Set Size</em>. La quantité exacte de mémoire virtuelle qui a été validée par la <strong>MMU</strong> et qui se trouve <strong>physiquement en RAM</strong> (les pages avec le bit de contrôle <code>Présent = 1</code>).</td>
+            </tr>
+            <tr>
+                <td><strong>SWAP</strong></td>
+                <td><span class="badge bg-disk">Mémoire de masse</span></td>
+                <td>Fraction des pages de données anonymes (variables, tas/malloc) du processus qui ont été éjectées de la RAM et écrites dans la zone de Swap sur le disque dur.</td>
+            </tr>
+            <tr>
+                <td><strong>SHR</strong></td>
+                <td><span class="badge bg-ram">RAM Partagée</span></td>
+                <td><em>Shared Memory</em>. Quantité de mémoire résidante (`RES`) qui est partagée avec d'autres processus. C'est la preuve concrète que la <strong>Table des Régions globale</strong> du noyau fait pointer plusieurs processus vers les mêmes zones physiques de la RAM (ex: bibliothèques dynamiques).</td>
+            </tr>
+            <tr>
+                <td><strong>S</strong></td>
+                <td><span class="badge bg-cpu">CPU / États</span></td>
+                <td>L'état actuel du processus dans son cycle de vie (<code>S</code> = Sleeping/En attente d'un événement, <code>R</code> = Running/En train de calculer sur le CPU, <code>Z</code> = Zombie).</td>
+            </tr>
+            <tr>
+                <td><strong>MINFLT</strong></td>
+                <td><span class="badge bg-ram">MMU / Gestionnaire</span></td>
+                <td><em>Minor Page Faults</em>. Nombre de défauts de page légers. La MMU interroge la table des régions, voit que la page est déjà en RAM (ex: allouée par un autre processus), et met à jour l'annuaire local instantanément sans toucher au disque.</td>
+            </tr>
+            <tr>
+                <td><strong>MAJFLT</strong></td>
+                <td><span class="badge bg-disk">MMU / Disque</span></td>
+                <td><strong>Major Page Faults (Défaut de page lourd)</strong>. La MMU crie <code>Présent = 0</code>. Le processus est bloqué, et le noyau doit déclencher une entrée/sortie lente (souvent via DMA) pour charger le bloc depuis le <strong>disque dur</strong> vers la RAM. C'est pourquoi le PID 1 (<code>init</code>) en a beaucoup au démarrage (110) : il doit charger tout son code depuis le disque.</td>
+            </tr>
+            <tr>
+                <td><strong>TIME+</strong></td>
+                <td><span class="badge bg-cpu">CPU / Temps consommé</span></td>
+                <td><strong>Temps de calcul cumulé</strong> réel sur les circuits du processeur (Format <code>Minutes:Secondes.Centièmes</code>). Mis à jour par le noyau à chaque <em>Context Switch</em>. Ne prend pas en compte le temps passé à l'état de sommeil (S).</td>
+            </tr>
+            <tr>
+                <td><strong>COMMAND</strong></td>
+                <td><span class="badge bg-core">Application</span></td>
+                <td>Le nom du programme ou la ligne de commande brute qui a généré ce processus.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

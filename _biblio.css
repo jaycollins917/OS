@@ -1,6 +1,6 @@
     
     
-html {
+html {          /* Les POLICES   */
 
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 30px;
@@ -8,13 +8,21 @@ html {
     font-size: 1.2rem;                      /* rem = Root em => taille de la police du document html (root) */
     font-size: 1.2em;                       /* em  = taille de la police parente.   */
 
-    line-height: 1.5;                       /* Hauteur d'une ligne, donc l'espacement inter-ligne. 1.6 ou 1.8 em est bien aéré
+    line-height: 1.5;                       /* Hauteur d'une ligne, donc l'espacement inter-ligne. 1.6 ou 1.8 em est bien aéré */
+
+    text-align: center;
 
     font-weight:bold;
     letter-spacing: 1px;
+    word-spacing: 4px;
 
     text-decoration: none;                     /* Pour éviter que les liens soient soulignés */
 
+}
+
+.les_bordures {
+    border: solid 2px;
+    border-color: rgb(65, 65, 65);
 }
 
 .lesLiens {

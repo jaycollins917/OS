@@ -32,7 +32,7 @@
             <li>
                 <strong>I. Introduction</strong>
                 <ul>
-                    <li><a href="#definition-os">1. Définition d'un OS</a></li>
+                    <li><a href="#titre1">1. Définition d'un OS</a></li>
                     <li><a href="#structure-ordi">2. Structure d'un ordinateur</a></li>
                     <li><a href="#archi-simple">3. Architecture simplifiée</a></li>
                     <li><a href="#notions-fondamentales">4. Notions fondamentales</a></li>
@@ -43,7 +43,7 @@
             <li>
                 <strong>II. Les processus</strong>
                 <ul>
-                    <li><a href="#les-processus">1. Les processus</a></li>
+                    <li><a href="#titre2">1. Les processus</a></li>
                     <li><a href="#table-processus">2. Table des processus</a></li>
                     <li><a href="#regions-processus">3. Régions des processus</a></li>
                     <li><a href="#les-threads">4. Les threads</a></li>
@@ -59,18 +59,36 @@
             <li>
                 <strong>III. La mémoire</strong>
                 <ul>
-                    <li><a href="#memoire-intro">1. Introduction</a></li>
+                    <li><a href="#titre3">1. Présentation</a></li>
                     <li><a href="#ram">2. La RAM</a></li>
                     <li><a href="#adresses-virtuelles">3. Les adresses virtuelles</a></li>
                     <li><a href="#creation-region-executable">4. Les régions d'un fichier exécutable</a></li>
-                    
+                    <li><a href="#codage-pagination">5. Traduction d'adresse et MMU</a></li>
+                    <li><a href="#defpage-swap-algo">6. Page faults, Swap et Algo de Remplacement</a></li>
+
                 </ul>
             </li>
+            <li>
+                <strong>IV. Systèmes de fichier</strong>
+                <ul>
+                    <li><a href="#titre4">1. Présentation</a></li>
+                    <li><a href="#type-fichiers">2. Types de fichiers</a></li>
+                    <li><a href="#table-inodes">3. Inodes et table des inodes</a></li>
+                    
+                    
+
+                </ul>
+            </li>            
+                
         </ul>
         </nav>
 
         
         <div class="leCours">
+
+            <!--------------------------------------------------------------------------- INTRODUCTION -->
+    
+            <div class="mega-titre" id="titre1">INTRODUCTION</div>
 
             <section id="definition-os">
                 <h1>1. Définition d'un OS</h1>
@@ -84,15 +102,24 @@
                     <li>L'intéraction avec des utilisateurs et l'exécution de leurs ordres dans la limite de leurs privilèges</li>
                     <li>La protection de l'information: contre lecture/écriture non autorisée (confidentialité des données)</li>
                     <li>La protection du matériel</li>
-                    <li><strong>Postulat : </strong>L'accès aux ressources et à l'information doit s'effectuer sous un contrôle strict du système</li>
+                    <li>L'accès aux ressources et à l'information doit s'effectuer sous un contrôle strict du système</li>
                 </ul>
             </section>
 
             <section id="structure-ordi">
                 <h1>2. Structure d'un ordinateur</h1>
-                <ul>
-                    <li><strong>CPU :</strong> Central Processing Unit : exécute les instructions. Cycle très haute vitesse appelé Fetch-Decode-Execute (Chercher - Décoder - Exécuter)</li>
-                    <li><strong>Chipset :</strong> chef d'orchestre (jeu de puces) de la carte mère. Ensemble de circuits intégrés dont le rôle est de coordonner et gérer les échanges de données entre la CPU et les autres composants de l'ordinateur (RAM, carte graphique, DD, USB, etc..)</li>
+                <ul class="ul_vert">
+                    <li><strong>Le processeur (ou CPU: Central Processing Unit) :</strong> C’est la puce électronique physique principale (le matériel) clipsée sur la carte mère. 
+                        Il joue le rôle de grand patron de l'ordinateur en exécutant en boucle le cycle à très haute vitesse Fetch-Decode-Execute. 
+                        Il englobe plusieurs sous-composants essentiels : l'UC (le chef d'orchestre), l'UAL (le calculateur), les registres (la mémoire ultra-rapide interne) et la MMU (le traducteur d'adresses).</li>
+                    <li><strong>UC (Unit of Control / Unité de Contrôle)</strong>C'est le centre de commandement logé à l'intérieur du processeur. Elle agit comme le chef d'orchestre du cycle d'exécution. 
+                        C'est elle qui va chercher l'instruction machine suivante en mémoire (Fetch), l'analyse pour comprendre ce qu'il faut faire (Decode) et pilote les autres circuits matériels (comme l'UAL ou les bus système)
+                         pour effectuer l'action (Execute). Elle ne fait aucun calcul mathématique elle-même, elle donne les ordres.</li>
+                    <li><strong>Le Noyau (ou Kernel)</strong>C'est le cœur logiciel du Système d'Exploitation (OS), chargé en premier en RAM au démarrage et doté des privilèges absolus (mode Superviseur). 
+                        C'est le gestionnaire suprême des ressources. Il sert d'intermédiaire invisible entre tes programmes et le matériel (CPU, RAM, Disque). 
+                        C'est lui qui gère la table des processus pour l'ordonnancement, la table des régions pour le partage de mémoire, et qui intervient lors des Page Faults pour transférer les données entre la RAM et le swap.</li>
+                    <li><strong>Chipset :</strong> chef d'orchestre (jeu de puces) de la carte mère. Ensemble de circuits intégrés dont le rôle est de coordonner et gérer les échanges de données 
+                        entre la CPU et les autres composants de l'ordinateur (RAM, carte graphique, DD, USB, etc..)</li>
                     <li><strong>Northbridge :</strong> n'existe plus. Gérait les composants ultra-rapides comme la RAM et la carte graphique</li>
                     <li><strong>Southbridge :</strong> renommé aujourd'hui. Chipset qui gère les E/S lentes de la carte mère</li>
                     <li><strong>DDR2 :</strong> DDR2 SDRAM - Double data rate synchronous dynamic random access memory</li>
@@ -120,9 +147,11 @@
 
                 <h2>Les composants</h2>
 
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Microprocesseur (CPU) : </strong>C'est le cerveau. Il exécute les instructions des programmes et orchestre tout le système. Effectue les calculs et dirige les transferts d'information (données, instruction)</li>
-                    <li><strong>Mémoire : </strong>Mémoire vive RAM -> Random access (accès aléatoire) signifie que le CPU peut accéder à n'importe quelle partie de la zone mémoire directement et en un temps unique, contrairement au DD où l'accès est séquentiel, il faut dérouler un plateau. C'est <strong>la planche de travail de la CPU : </strong>Elle stocke les données et les programmes en cours d'exécution pour que le CPU y accède rapidement.</li>
+                    <li><strong>Mémoire : </strong>Mémoire vive RAM -> Random access (accès aléatoire) signifie que le CPU peut accéder à n'importe quelle partie de la zone mémoire directement et en un temps unique, 
+                        contrairement au DD où l'accès est séquentiel, il faut dérouler un plateau. C'est <strong>la planche de travail de la CPU : </strong>
+                        Elle stocke les données et les programmes en cours d'exécution pour que le CPU y accède rapidement.</li>
                     <li><strong>Entrée/Sortie : </strong>L'interface avec le monde extérieur (clavier, souris, écran, disque dur) pour recevoir ou envoyer des données.</li>
 
                     
@@ -130,7 +159,7 @@
 
                 <h2>Les 3 types de bus</h2>
                 
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Bus de données : </strong>Transporte le contenu réel (les bits d'un fichier, une variable de code, une image) entre les trois blocs.</strong></li>
                     <li><strong>Bus d'adresse : </strong>Indique où envoyer ou récupérer l'information (ex: "Je veux lire la case mémoire n°1024").</li>
                     <li><strong>Bus de commande : </strong>Transmet les ordres de contrôle et de synchronisation (ex: "C'est une opération de Lecture" ou "C'est une opération d'Écriture").</li>
@@ -140,14 +169,14 @@
             <section id="notions-fondamentales">
                 <h1>4. Notions fondamentales</h1>
 
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Processus : </strong>exécution d'un programme</li>
                     <li><strong>Ressource : </strong>toute entité nécessaire à la progression d'un processus</li>
                 </ul>
 
                 <h2>Types de ressources</h2>
 
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Matérielle : </strong>L'UC, RAM, périphérique, disque dur </li>
                     <li><strong>Logicielle : </strong>Les données, le code (les instructions), fichiers, sémaphore, socket réseau...</li>
                 </ul>
@@ -159,7 +188,7 @@
 
                 <p>Le temps partagé (time-sharing) est une technique de l'OS pour donner l'illusion du parallélisme (appelé pseudo-parallélisme) sur un seul cœur de processeur.</p>
 
-                <ul>
+                <ul >
                     <li>Le principe : Le processeur n'exécute pas les processus en même temps, mais les uns après les autres à toute vitesse.</li>
                     <li>Le Quantum de temps : L'OS attribue à chaque processus un temps de parole très court (quelques millisecondes), appelé quantum.</li>
                     <li>La rotation (Commutation de contexte) : Dès que le temps d'un processus est écoulé, l'OS le suspend, sauvegarde son état, et passe au processus suivant.</li>
@@ -172,8 +201,9 @@
 
                 <h2>Les différentes couches (de haut en bas) --> L'OS  s'étend sur les 3 couches intermédiaires</h2>
                 <img src="./res/archiSE.jpg" alt="Architecture d'un OS"/>
-                <ul>
-                    <li><strong>Applications & Interfaces :</strong> Programmes de niveau utilisateur (compilateurs, navigateur, éditeur de texte). L'interaction se fait via une <strong>Interface graphique (GUI)</strong> (système de multifenêtrage) ou une <strong>CLI (Command-line interface)</strong> constituée d'un interpréteur de commandes (shell).</li>
+                <ul class="ul_vert">
+                    <li><strong>Applications & Interfaces :</strong> Programmes de niveau utilisateur (compilateurs, navigateur, éditeur de texte). 
+                        L'interaction se fait via une <strong>Interface graphique (GUI)</strong> (système de multifenêtrage) ou une <strong>CLI (Command-line interface)</strong> constituée d'un interpréteur de commandes (shell).</li>
                     <li><strong>Bibliothèques :</strong> Regroupent des fonctions/procédures ou variables prédéfinies compilées selon une thématique commune (ex : bibliothèque des fonctions mathématiques) pour faciliter le développement.</li>
                     <li><strong>API (Application Programming Interface) :</strong> Point de contact qui gère les <strong>appels système</strong> ou les primitives système pour faire le pont de manière sécurisée avec le noyau.</li>
                     <li><strong>Noyau (Kernel ou "système") :</strong> C'est le cœur du SE et le sujet principal du cours. Il coordonne les processus et gère l'allocation des ressources.</li>
@@ -240,8 +270,11 @@
                 </table>
             </section>
 
+            <!--------------------------------------------------------------------------- LES PROCESSUS -->
+
+            <div class="mega-titre" id="titre2">LES PROCESSUS</div>
             <section id="les-processus">
-                <h1>7. Les processus</h1>
+                <h1>1. Les processus</h1>
 
                 <div class="definition-box">
                     <p><strong>Un processus &nbsp;=&nbsp; une exécution d’un programme</strong></p>
@@ -256,28 +289,29 @@
 
                 <h2>Régions typiques d’un processus Linux</h2>
 
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>.text : </strong>Contient les instructions en langage machine</li>
                     <li><strong>.data : </strong>Données initialisées</li>
                     <li><strong>BSS :</strong> Données non initialisées (<em>block started by symbol</em>)</li>
-                    <li><strong>Stack :</strong> Pile d’exécution. Zone mémoire dynamique. Contient les variables locales (temporaires), les paramètre d'entrée de fonction. Quand une fonction est terminée (return), toutes les données sont supprimées.</li>
+                    <li><strong>Stack :</strong> Pile d’exécution. Zone mémoire dynamique. Contient les variables locales (temporaires), les paramètre d'entrée de fonction. Quand une fonction est terminée (return), 
+                        toutes les données sont supprimées.</li>
                     <li><strong>Heap :</strong> &laquo;&nbsp;tas&nbsp;&raquo; (pile d’allocation dynamique de la mémoire)</li>
-                    <li>Les régions associées aux diverses bibliothèques utilisées</li>
-                    <li>Les droits d’accès du processus à ses régions sont <strong>r-x</strong> ou <strong>rw-</strong> ou <strong>r--</strong> suivi d’un 4<sup>ème</sup> caractère :
+                    <li><strong>Les régions </strong>associées aux diverses bibliothèques utilisées</li>
+                    <li><strong>Les droits d’accès </strong>du processus à ses régions sont <strong>r-x</strong> ou <strong>rw-</strong> ou <strong>r--</strong> suivi d’un 4<sup>ème</sup> caractère :
                         <ul>
                             <li><strong>s</strong> : <em>shared</em> (partagé)</li>
                             <li><strong>p</strong> : <em>private</em> (privé)</li>
                         </ul>
                 </ul>
 
-                <p>Commande pour lister les régions du processus numéro <em>n</em> (où <em>n</em> est le PID du processus) : <strong>less /proc/n/maps</strong></p>
-                <ul>
-                    <li><a class="liens_ext" href="maps.html" target="_blank">Détails de la commande maps sur un processus</a></li>
-                </ul>
+                <p>Commande pour lister les régions du processus numéro <em>n</em> (où <em>n</em> est le PID du processus) : <strong>less /proc/n/maps</strong>
+                    <br><a class="liens_ext" href="maps.html" target="_blank">Détails de la commande maps sur un processus</a>
+                </p>
+
             </section>
 
             <section id="table-processus">
-                <h1>8. Table des processus</h1>
+                <h1>2. Table des processus</h1>
                 
                 <p>La table des processus est stockée de manière invisible en RAM dans l'espace noyau, mais l'OS' expose son contenu de manière transparente à travers le répertoire virtuel /proc et les commandes comme ps ou htop</p>
 
@@ -286,7 +320,7 @@
                 </div>
 
                 <h2>Concepts clés</h2>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Espace Noyau :</strong> Réservé au système d'exploitation, il contient la <strong>table des processus</strong>. Chaque entrée de cette table pointe vers un processus chargé en mémoire.</li>
                     <li><strong>Espace Utilisateur :</strong> Zone isolée allouée à chaque processus (Processus A, B, C, D) contenant son propre espace d'adressage virtuel.</li>
                     <li><strong>Zoom structurel :</strong> On y retrouve l'organisation classique vue en TP : le code tout en bas, suivi des données, du tas qui grandit vers le haut, et de la pile qui redescend depuis les adresses hautes.</li>
@@ -300,7 +334,7 @@
             </section>
 
             <section id="regions-processus">
-                <h1>9. Régions des processus</h1>
+                <h1>3. Régions des processus</h1>
 
                 <div class="picture">
                     <img src="./res/org_region.jpg" alt="Organisation des régions"/>
@@ -308,20 +342,24 @@
 
                 <h2>Explications</h2>
 
-                <p><strong>Une table : </strong> est un tableau, une structure de données en mémoire composée de plusieurs cases alignées, toutes de même structure</p>
-                <p><strong>La table des processus :</strong> est un grand tableau géré par le noyau. Chaque case représente un processus actif du système, et contient la structure d'identité du processus (le PCB ou task_struct), qui inclut notamment le pointeur vers sa région.
+                <p><strong>Une table : </strong> est un tableau, une structure de données en mémoire composée de plusieurs cases alignées, toutes de même structure.</p>
+                <p><strong>La table des processus :</strong> En RAM.Tableau géré par le noyau. Chaque case représente un processus actif du système, et contient la structure d'identité du processus <or>(le PCB ou task_struct)</or>.
+                    <br><or>Le PCB ou task_struct</or> contient notamment: PID, UID, GID, pointeurs vers processus parents ou enfants, l'état du processus, le contexte des registres...
                     </br>La table des processus ne contient pas l'ensemble des régions du processus, mais des pointeurs faisant référence à ces régions.
+                    <br><a class="liens_ext" href="htop.html" target="_blank">(Voir "htop.html")</a>
                 </p>
 
-                <p><strong>La table des régions du processus X : </strong> contient l'ensemble des régions du processus (.text, .data, voir lien "maps"). Ses adresses mémoire son virtuelles</p>
-                
+                <p><strong>La table des régions du processus X : </strong> En RAM. Contient l'ensemble des adresses des régions du processus qui sont sur le DD (.text, .data,...). Ses adresses mémoire sont virtuelles.
+                    <br><a class="liens_ext" href="maps.html" target="_blank">(Voir "maps.html")</a>
+                </p>
+
                 <p><strong>La table des régions (noyau) : </strong> Dans un espace de la RAM, l'ensemble des régions des processus est organisée dans la table des régions.
                     </br>Si 50 processus utilisent la même bibliothèque, celle-ci ne va pas être chargée 50 fois. Cette bibliothèque va être partagée entre les processus.
                 </p>
 
                 <div class="definition-box">
                     <p><strong>Région &nbsp;=&nbsp; Segment &nbsp;=&nbsp; VMA (Virtual Memory Area &rarr; Linux)</strong></p>
-                    <ul>
+                    <ul class="ul_vert">
                         <li><strong>Région :</strong> Terme conceptuel et pédagogique utilisé en cours pour désigner un bloc homogène de mémoire virtuelle (ex: Pile, Tas).</li>
                         <li><strong>Segment :</strong> Terme matériel (hardware) lié à l'architecture des processeurs qui sépare physiquement le code des données.</li>
                         <li><strong>VMA (Virtual Memory Area) :</strong> Terme technique officiel du noyau Linux; c'est la structure en C (`vm_area_struct`) qui représente chaque ligne affichée par la commande `maps`.</li>
@@ -330,7 +368,7 @@
 
 
                 <h2>Le mécanisme de traduction de la mémoire</h2>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Niveau Logique (Le Processus) :</strong> La table d'un processus pointe vers sa propre <em>table des régions</em> (ses blocs de mémoire virtuels).</li>
                     <li><strong>Niveau Système (Le Noyau) :</strong> La table globale des régions du noyau permet de centraliser la mémoire. C'est grâce à elle que deux processus différents peuvent partager une même bibliothèque en RAM (liaison dynamique).</li>
                     <li><strong>Niveau Matériel (La Table des Pages) :</strong> Chaque région est découpée en blocs de taille fixe de <strong>4 Ko</strong> (les pages). La table des pages fait l'aiguillage final :
@@ -343,13 +381,13 @@
             </section>
 
             <section id="les-threads">
-                <h1>10. Les threads</h1>
+                <h1>4. Les threads</h1>
                 
                 <h2>Introduction : Qu'est-ce qu'un thread ?</h2>
                 <div class="definition-box">
                     <p>En anglais, le mot <strong>"thread"</strong> signifie littéralement <strong>"un fil"</strong> (de discussion ou à coudre). En informatique, on parle de <strong>fil d'exécution</strong>.</p>
                     <p>Concrètement, un thread sert à exécuter plusieurs tâches simultanément au sein d'un même programme. Ses principaux objectifs sont :</p>
-                    <ul>
+                    <ul class="ul_vert">
                         <li><strong>La réactivité :</strong> Éviter qu'une application ne se bloque (ne "freeze") pendant un long traitement (ex: télécharger un fichier en tâche de fond tout en gardant l'interface graphique fluide).</li>
                         <li><strong>La performance :</strong> Exploiter la puissance des processeurs multi-cœurs en répartissant les calculs sur plusieurs cœurs en même temps.</li>
                         <li><strong>La légèreté :</strong> Économiser la mémoire vive (RAM) en évitant de dupliquer un processus entier. Contrairement aux processus, les threads partagent le même espace mémoire, ce qui les rend ultra-rapides à créer et à détruire.</li>
@@ -357,7 +395,7 @@
                 </div>
 
                 <h2>Propriétés fondamentales</h2>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Définition :</strong> Un thread (ou "processus léger") est une unité d'exécution créée à l'intérieur d'un processus.</li>
                     <li><strong>Indépendance :</strong> Chaque thread possède sa propre <strong>pile d'exécution</strong> exclusive.</li>
                     <li><strong>Partage :</strong> Par défaut, toutes les autres régions du processus (Code, Tas, Données) sont partagées entre tous ses threads.</li>
@@ -381,7 +419,7 @@
             </section>
 
             <section id="task-diag-etat">
-                <h1>11. Diagramme d'états des tâches (Linux)</h1>
+                <h1>5. Diagramme d'états des tâches (Linux)</h1>
                 
                 <p>
                     Sous Linux, le noyau traite les processus et les threads de la même manière : ce sont des <strong>tâches (tasks)</strong>. 
@@ -431,7 +469,7 @@
             </section>
 
             <section id="ordonnancement">
-                <h1>12. L'Ordonnancement des Tâches sous Linux</h2>
+                <h1>6. L'Ordonnancement des Tâches sous Linux</h2>
 
                 <p>
                     L'<strong>ordonnancement</strong> (ou <em>scheduling</em>) est le mécanisme par lequel le noyau Linux décide quelle tâche va s'exécuter sur le processeur (l'UC) à un instant donné, et pendant combien de temps. 
@@ -442,7 +480,7 @@
                 
                     <h2>Le Principe : Les Files de Priorité</h2>
                     <p>Le noyau gère un tableau de files d'attente indépendantes :</p>
-                    <ul>
+                    <ul class="ul_vert">
                         <li><strong>Des niveaux de priorité :</strong> Chaque file correspond à un niveau de priorité précis. Lors de sa création, une tâche reçoit sa priorité de départ selon sa catégorie.</li>
                         <li><strong>Le sens de lecture :</strong> L'ordonnanceur parcourt toujours ces files dans l'ordre des numéros croissants (de la plus prioritaire à la moins prioritaire).</li>
                         <li><strong>L'élection :</strong> Dès que l'ordonnanceur trouve une file qui contient des tâches prêtes (<em>ready</em>), la toute première tâche éligible en tête de file est choisie (on dit qu'elle est <strong>élue</strong>) pour occuper l'UC.</li>
@@ -538,7 +576,7 @@
 
             <section id="proc-attribut">
 
-                <h1>13. Les attributs d'un processus</h1>
+                <h1>7. Les attributs d'un processus</h1>
                 <table class="tableau_style">
                     <thead>
                         <tr>
@@ -619,81 +657,100 @@
                 </p>
             </section>
 
-            <section id="appel-sys"></section>
+            <section id="appel-sys">
 
-            <h1>14. Les appels système</h1>
+                 <h1>8. Les appels système</h1>
 
-            <table class="tableau_style">
-                <thead>
-                    <tr>
-                        <th>Appel système / Fonction</th>
-                        <th>Type de routine</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Appel système / Fonction</th>
+                            <th>Type de routine</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    <tr>
-                        <td>brk(2), sbrk(2)</td>
-                        <td>Appels système</td>
-                        <td>Permettent l'extension ou la diminution de la taille de la région des données (le segment de données) du processus.</td>
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td>clone(2)</td>
-                        <td>Appel système</td>
-                        <td>Création d'un thread. C'est l'appel système sous-jacent à la gestion des processus légers sous Linux.</td>
-                    </tr>
-                    <tr>
-                        <td>exec(2)</td>
-                        <td>Appel système</td>
-                        <td>Chargement d'un nouveau programme dont l'exécution vient se substituer intégralement au processus en cours.</td>
-                    </tr>
-                    <tr>
-                        <td>fork(2)</td>
-                        <td>Appel système</td>
-                        <td>Création d'une copie conforme du processus courant. L'original est appelé le <em>père</em> et la copie est le <em>fils</em>.</td>
-                    </tr>
-                    <tr>
-                        <td>wait(2)</td>
-                        <td>Appel système</td>
-                        <td>Assure la synchronisation du processus père sur la fin (la terminaison) de l'un de ses fils.</td>
-                    </tr>
-                    <tr>
-                        <td>exit(3)</td>
-                        <td>Fonction de bibliothèque (API)</td>
-                        <td>Provoque la terminaison propre du processus en cours.</td>
-                    </tr>
-                    <tr>
-                        <td>pthread_create(3)</td>
-                        <td>Fonction de bibliothèque (API)</td>
-                        <td>Permet la création d'un thread en offrant davantage de paramètres de configuration. Elle s'appuie en interne sur <code>clone(2)</code>.</td>
-                    </tr>
-                        <td>Gestion des signaux</td>
-                        <td>Appels système dédiés</td>
-                        <td>Routines de gestion des signaux, notamment <code>kill(2)</code> pour l'envoi, ainsi que <code>signal(2)</code> et <code>sigaction(2)</code> pour leur interception.</td>
-                    </tr>
-                    <tr>
-                        <td>Communication (IPC)</td>
-                        <td>Appels système dédiés</td>
-                        <td>Outils et routines assurant la communication inter-processus (tubes, segments partagés, etc.).</td>
-                    </tr>
-                </tbody>
-            </table>
 
-            <p>Note :  (2) = appels système , (3) = fonctions de bibliothèques</p>
+                        <tr>
+                        <tr>
+                            <td>clone(2)</td>
+                            <td>Appel système</td>
+                            <td>Cette fonction est propre à Linux. Elle est la racine de fork() et de pthread_create()
+                                Dans 99% des cas, on utilisera ce deux fonctions, mais clone() est un outil puissant qui permet de gérer tout les paramètre du clonage.
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>fork(2)</td>
+                            <td>Appel système</td>
+                            <td>L'OS dublique le processus courant. Quand on fait un exec() avec le shell par exemple, le processus appelant est entièrement détruit.
+                                C'est ce qu'il se passe quand on lance une commande sous shell: il fait un fork, de manière à ce que le shell ne soit pas détruit.
+                                <ol>
+                                    <li>L'original est appelé le <em>père</em> et la copie est le <em>fils</em>.</li>
+                                    <li>Le fils hérite du code, des variables et la table de description des fichiers ouverts</li>
+                                    <li>À l'appel PID = fork(), le père reçoit l'ID du processus, et le fils 0, afin de les distinguer par la suite.</li>
+                                </ol>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>pthread_create(3)</td>
+                            <td>Fonction de bibliothèque (API)</td>
+                            <td>À la différence de fork(), le processus fils, le thread, va partager le code, les variables, etc, avec le père, sauf la pile d'exécution.
+                                Il permet donc de faire du parallèlisme dans les cas de jeux vidéo, traintement d'image, où les processus doivent partager des données, ou se dispatcher sur plusieurs CPU.
+                            </td>
+                        </tr>
 
-            <h2>Appels systèmes et fonctions de bibliothèques</h2>
+                        <tr>
+                            <td>exec(2)</td>
+                            <td>Appel système</td>
+                            <td>Chargement d'un nouveau programme dont l'exécution vient se substituer intégralement au processus en cours.</td>
+                        </tr>
+                        <tr>
+                            <td>brk(2), sbrk(2)</td>
+                            <td>Appels système</td>
+                            <td>Permettent l'extension ou la diminution de la taille de la région des données (le segment de données) du processus.</td>
+                        </tr>
+                        <tr>
+                            <td>wait(2)</td>
+                            <td>Appel système</td>
+                            <td>Assure la synchronisation du processus père sur la fin (la terminaison) de l'un de ses fils.</td>
+                        </tr>
+                        <tr>
+                            <td>exit(3)</td>
+                            <td>Fonction de bibliothèque (API)</td>
+                            <td>Provoque la terminaison propre du processus en cours.</td>
+                        </tr>
 
-            <p>La différence réside dans qui exécute le code et où il est exécuté</p>
+                            <td>Gestion des signaux</td>
+                            <td>Appels système dédiés</td>
+                            <td>Routines de gestion des signaux, notamment <code>kill(2)</code> pour l'envoi, ainsi que <code>signal(2)</code> et <code>sigaction(2)</code> pour leur interception.</td>
+                        </tr>
+                        <tr>
+                            <td>Communication (IPC)</td>
+                            <td>Appels système dédiés</td>
+                            <td>Outils et routines assurant la communication inter-processus (tubes, segments partagés, etc.).</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <ul>
-                <li><strong>Appel système : </strong>Fonction directement exécutée par le noyau (Ring 0). Le programme utilisateur n'a pas le droit d'accéder directement au matériel (DD, RAM, carte Réseau). Il doit donc passer par un appel système.</li>
-                <li><strong>Fonction de bibliothèque : </strong>Code pré-écrit qui s'exécute entièrement dans l'espace user (Ring 3).</li>
-            </ul>
+                <p>Note :  (2) = appels système , (3) = fonctions de bibliothèques</p>
+
+                <h2>Appels systèmes et fonctions de bibliothèques</h2>
+
+                <p>La différence réside dans qui exécute le code et où il est exécuté</p>
+
+                <ul class="ul_vert">
+                    <li><strong>Appel système : </strong>Fonction directement exécutée par le noyau (Ring 0). Le programme utilisateur n'a pas le droit d'accéder directement au matériel (DD, RAM, carte Réseau). Il doit donc passer par un appel système.</li>
+                    <li><strong>Fonction de bibliothèque : </strong>Code pré-écrit qui s'exécute entièrement dans l'espace user (Ring 3).</li>
+                </ul>
+
+            </section>
 
             <section id="cmd-proc">
 
+            <h1>9. Commandes sur les processus</h1>
             <table class="tableau_style">
                 <thead>
                     <tr>
@@ -784,7 +841,7 @@
 
             <section id="exclusion">
 
-                <h1>16. Exclusion mutuelle</h1>
+                <h1>10. Exclusion mutuelle</h1>
                 <h2>1. Le Problème : L'Exclusion Mutuelle</h2>
                 <p>
                     Dans un système concurrent (multi-processus ou multi-threads), certaines ressources ne doivent pas être partagées simultanément. 
@@ -802,7 +859,7 @@
 
                 <h2>2. Les Solutions d'Accès</h2>
                 <p>Pour contrôler l'accès à une section critique, il existe deux grandes familles de solutions :</p>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Solutions logicielles :</strong> Algorithmes complexes (Dekker, Peterson, la boulangerie de Lamport) qui permettent d'aborder les notions d'interblocages (deadlocks), de famine et d'équité.</li>
                     <li><strong>Solutions matérielles :</strong> Reposent sur des instructions machines indivisibles appelées <strong>appels atomiques</strong>. C'est ce qui permet de bâtir les outils comme les <strong>sémaphores</strong> et les <strong>moniteurs</strong>.</li>
                 </ul>
@@ -851,7 +908,7 @@
 
             <section id="interlock">
 
-                <h1>17. Interblocages (deadlock)</h1>
+                <h1>11. Interblocages (deadlock)</h1>
                 <p>
                     Un interblocage se produit lorsque plusieurs processus s’attendent mutuellement.</br>
                     Chaque processus détient une ressource et attend une autre ressource bloquée par un autre processus, ce qui fige complètement l'exécution du programme.
@@ -898,7 +955,7 @@
                 <h2>Les Stratégies de Résolution</h2>
                 <p>Il existe trois grandes approches pour gérer ce problème :</p>
                 
-                <ul>
+                <ul class="ul_vert">
                     <li>
                         <strong>La prévention (au niveau du programmeur) :</strong> 
                         Il s’agit de concevoir des stratégies de programmation des processus, comme par exemple imposer une <em>demande ordonnée d'accès aux ressources</em>. Si A et B demandent toujours les sémaphores dans le même ordre ($S_1$ puis $S_2$), l'interblocage devient impossible.
@@ -915,11 +972,14 @@
                 <p><strong>Le comportement de Linux :</strong> Par défaut, le noyau Linux <em>n’implémente pas</em> ces techniques de détection ou d'évitement au niveau du noyau. C'est donc au <strong>programmeur</strong> d'être vigilant et d'appliquer de bonnes pratiques de prévention lors de la manipulation des sémaphores.</p>
             </section>
        
+            <!--------------------------------------------------------------------------- LA MÉMOIRE -->
+
+            <div class="mega-titre" id="titre3">LA MÉMOIRE</div>            
             <section id="memoire-intro">
                 <h1>1. Présentation</h1>
 
                 <h2>Pagination et segmentation</h2>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Pagination :</strong> Découpe la mémoire vive en blocs de taille fixe (généralement 4 Ko) appelés <em>cadres de pages</em> Les programmes manipulent des pages de même taille. Cette approche engendre de la <strong>fragmentation interne</strong>, car la dernière page d'une région n'est souvent pas complètement remplie.</li>
                     <li><strong>Segmentation :</strong> Découpe la mémoire en morceaux de tailles variables correspondants aux structures logiques du programme. Elle engendre de la <strong>fragmentation externe</strong>, laissant des espaces vides inutilisables entre les segments si la mémoire n'est pas paginée.</li>
                 </ul>
@@ -941,7 +1001,7 @@
                 <p>
                     Les instructions du processeur (chargement, écriture, sauts, pile) font constamment référence à des adresses mémoire. La capacité d'adressage dépend directement de l'architecture du CPU :
                 </p>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Architecture 32 bits :</strong> Le CPU peut adresser un maximum de <strong>4 Go</strong> de RAM.</li>
                     <li><strong>Architecture 64 bits :</strong> La limite théorique grimpe à <strong>16 Exaoctets</strong> (soit 1,84 &times; 10<sup>19</sup> octets).</li>
                 </ul>
@@ -1002,22 +1062,27 @@
                 <p>
                     Lorsque les adresses sont éloignées, elles sont structurées et représentées sous la forme d'un couple <strong>(r, a<sub>r</sub>)</strong> où :
                 </p>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>r :</strong> représente le numéro ou l'identifiant unique de la région entière. Il cible une structure logique complète du processus (ex: Code, Données globales, Pile, Tas). <br>Le sélecteur <strong>r</strong> ne peut pas cibler la moitié d'une région, il désigne une frontière stricte.</li>
                     <li><strong>a<sub>r</sub> :</strong> correspond à l'adresse locale (le déplacement ou <em>offset</em>) calculée à l'intérieur de cette région spécifique. Il commence toujours à <code>0</code> au début de la région concernée.</li>
                 </ul>
+
+                <figure class="picture">
+                    <img src="./res/adressage.jpg" alt="adressage">
+                    <figcaption>Codage de l'adresse d'une région</figcaption>
+                </figure>             
 
                 <h2>Exemple concret d'application</h2>
                 <p>
                     Imaginons un programme où Linux a défini les identifiants logiques suivants :
                 </p>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>Région 1 :</strong> Zone de Code (Text) &rarr; Droits : Lecture / Exécution (<code>r-x</code>).</li>
                     <li><strong>Région 2 :</strong> Zone des Données (Data) &rarr; Droits : Lecture / Écriture (<code>rw-</code>).</li>
                 </ul>
                 
                 <p> Lors de l'exécution, le processeur utilise ces couples pour segmenter ses accès :</p>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>(1, 500) :</strong> Pointe vers une instruction située 500 octets après le début de la région <strong>Code</strong>. Le CPU autorise l'exécution.</li>
                     <li><strong>(2, 64) :</strong> Pointe vers une variable globale située 64 octets après le début de la région <strong>Données</strong>. Le CPU autorise la modification de la variable.</li>
                 </ul>
@@ -1035,33 +1100,600 @@
                 <p>
                     Un fichier exécutable sur le disque contient plusieurs informations lues par le noyau pour instancier un processus :
                 </p>
-                <ul>
+                <ul class="ul_vert">
                     <li><strong>L'en-tête du fichier :</strong> Toujours placé au début, il décrit la structure globale et les attributs du fichier.</li>
-                    <li><strong>L'en-tête du programme :</strong> Indique au noyau comment créer le processus à partir du fichier.</li>
-                    <li><strong>La table d'en-tête de section :</strong> Résume les différentes sections du fichier.</li>
-                    <li><strong>Les sections :</strong> Contiennent le code exécutable (<em>text</em>) et les données initialisées (<em>data</em>).</li>
+                        <ul>
+                            <li>Le Magic Number (la signature): Pour un fichier ELF, les 4 premiers octets sont toujours <or>0x7F 'E' 'L' 'F'</or>. Linux le reconnaît ainsi.</li>
+                            <li>L'architecture cible: indique si le prog a été compilé pour une UC 32 ou 64bit, et si c'est du x86 ou de l'ARM</li>
+                            <li>Le point d'entrée: l'adresse exacte où se trouve la première instruction à exécuter</li>
+                            <li>La table des sections (la structure globale): adresses de la section code, variables globales.</li>
+                        </ul>
+                    <li><strong>L'en-tête du programme :</strong> Indique au chargeur du noyau <or>(loader)</or>. Il décrit le processus en mémoire (comment cartographier le fichier dans la RAM)</li>
+                    <li><strong>La table d'en-tête de section :</strong> Résume les différentes sections du fichier:</li>
+                        <ul>
+                            <li>Son nom : <or>.text, .data, .bss,</or> etc...</li>
+                            <li>Sa taille en octet.</li>
+                            <li>Sa position (offset) dans le fichier.</li>
+                            <li>Son type (code, données initialisées, etc....)</li>
+                        </ul>
+                    <li><strong>Les sections :</strong> Contiennent les sections en elle-même: <or>.text, .data, .bss...</or>.</li>
                 </ul>
                 <blockquote>
                     <strong>Note :</strong> Des outils comme <code>objdump</code> et <code>readelf</code> permettent d'explorer et de désassembler ces structures.
                 </blockquote>
 
+                <p>Détail des fichiers</p>
+                <ul>
+                    <li><a class="liens_ext" href="fichier_exec.html" target="_blank">Un fichier exécutable</a></li>
+                </ul>
+
                 <h2>Adresses virtuelles dans l'exécutable &amp; Chargement</h2>
                 <p>
-                    Lors de la compilation et de l'édition des liens, les futures régions standards (<em>text, data, BSS, stack, heap</em>) sont déjà numérotées, et leurs adresses internes sont codées sous la forme <strong>(r, a<sub>r</sub>)</strong>.
+                    Pour structurer la mémoire virtuelle, le système utilise un adressage sous forme de couple <strong>(r, a<sub>r</sub>)</strong> :
+                </p>
+                <ul class="ul_vert">
+                    <li><strong>r (Région) :</strong> Représente le numéro de la région cible (le « bâtiment » en mémoire, ex: <em>text</em>, <em>data</em>, <em>stack</em>).</li>
+                    <li><strong>a<sub>r</sub> (Adresse interne) :</strong> Représente le déplacement ou l'offset exact à l'intérieur de cette région spécifique (la « chambre » dans ce bâtiment).</li>
+                </ul>
+
+                <p>
+                    Lors de la compilation et de l'édition des liens, les futures régions standards (<code>text</code>, <code>data</code>, <code>BSS</code>, <code>stack</code>, <code>heap</code>) sont indispensables et connues à l'avance. Leurs adresses internes sont donc directement codées « en dur » sous la forme <strong>(r, a<sub>r</sub>)</strong> dans le fichier exécutable.
                 </p>
                 <p>
-                    En revanche, les zones qui n'apparaissent qu'en cours de route (bibliothèques dynamiques, mémoire partagée, projections <code>mmap</code>) sont notées sous forme symbolique. Lors de l'appel système <code>exec</code>, le noyau réorganise la table des régions, crée celles prévues et met à jour le compteur du processus.
+                    En revanche, les zones qui n'apparaissent qu'en cours de route (bibliothèques dynamiques comme la <code>libc</code>, segments de mémoire partagée, projections <code>mmap</code>) ne peuvent pas être localisées à l'avance. Elles sont simplement notées sous forme <strong>symbolique</strong> (une étiquette temporaire). 
+                </p>
+                <p>
+                    Lors de l'appel système <code>exec</code>, le noyau Linux initialise la table des régions en créant uniquement les régions standards prévues et démarre le processus.
                 </p>
 
-                <h2>Création d'une région à proprement parler</h2>
+                <hr>
+
+                <h2>Création d'une région à proprement parler (Dynamique)</h2>
                 <p>
-                    Si le processus rencontre une référence symbolique (ex: appel à une bibliothèque dynamique) ou fait un appel système explicite (<code>mmap</code>, <code>shmget</code>), une nouvelle région est créée. 
-                    Le noyau ajoute une ligne à l'indice <strong>r<sub>max</sub></strong> dans la table des régions du processus, incrémente <strong>r<sub>max</sub></strong> et remplace la référence symbolique par le couple <strong>(r, a<sub>r</sub>)</strong> final.
+                    Si le processus rencontre une référence symbolique lors de son exécution (ex: premier appel à <code>printf</code> dans une bibliothèque dynamique) ou s'il fait un appel système explicite (<code>mmap</code>, <code>shmget</code>), une nouvelle région doit être créée à la volée :
+                </p>
+
+                <ol class="ul_vert">
+                    <li>
+                        <strong>Allocation dans la table :</strong> Le noyau Linux ajoute une nouvelle ligne à l'indice <strong>r<sub>max</sub></strong> (le nombre actuel de régions actives) dans la table des régions du processus.
+                    </li>
+                    <li>
+                        <strong>Incrémentation de l'indice :</strong> Le pointeur de limite globale est mis à jour dans le noyau : 
+                        <pre><code>r<sub>max</sub> &larr; r<sub>max</sub> + 1</code></pre>
+                    </li>
+                    <li>
+                        <strong>Résolution de l'adresse :</strong> Le noyau charge physiquement la ressource en RAM, met à jour sa table globale, et remplace définitivement la référence symbolique temporaire (l'étiquette) par le couple physique <strong>(r, a<sub>r</sub>)</strong> nouvellement créé.
+                    </li>
+                </ol>
+                <p>
+                    <em>Note : Les appels suivants vers cette ressource n'auront plus besoin de solliciter le noyau ; le processus utilisera directement le couple <strong>(r, a<sub>r</sub>)</strong> désormais enregistré.</em>
                 </p>
             </section>
 
+            <section id="codage-pagination">
+                <h1>5. Traduction d'adresse et MMU</h1>
+                
+                <p>
+                    En combinant la structure de l'en-tête ELF (qui définit les régions logiques) et le mécanisme de pagination du noyau, le processeur via la <strong>MMU</strong> (<em>Memory Management Unit</em>) traduit en temps réel chaque accès mémoire du programme.
+                </p>
+
+                <div class="trois_img">
+                    <figure class="picture1">
+                        <img src="./res/adVirtuelleLogiques.jpg" alt="ad_virt">
+                        <figcaption>Adresses virtuelles VS Adresses logiques</figcaption>
+                    </figure>
+
+                    <figure class="picture1">
+                        <img src="./res/pagination.jpg" alt="pagination">
+                        <figcaption>Traduction des pages</figcaption>
+                    </figure>
+           
+                </div>
+
+                <h2>Définitions</h2>
+
+                <ul>
+                    <li>La mémoire vive est divisée en morceaux de même taille (4K par défaut) et appelés <strong>cadres de page</strong></li>
+                    <li>Un cadre de page occupé contient une <strong>page</strong></li>
+                    <li>Les pages entière sont tranférées entre la RAM et les périphériques (HDD, SSD, Carte réseau) via le contrôleur DMA</li>
+                </ul>
+
+                <h2>Rappel et Zoom</h2>
+
+                <div class="trois_img">
+                    <figure class="picture1">
+                        <img src="./res/org_region.jpg" alt="pagination">
+                     </figure>
+
+                    <figure class="picture1">
+                        <img src="./res/pagination2.jpg" alt="pagination2"/>
+                     </figure>
+                </div>                
+
+                <h2>Le Mécanisme de base</h2>
+                
+                <figure class="picture">
+                    <img src="./res/page1.jpg" alt="page1">
+                </figure>
+                
+                <p>Le programme compilé est stocké sur le disque, sous forme d'adresses virtuelles. La toute première image pourrait être le disque contenant <or>ABCD</or>. Ainsi:</p>
+
+                <ol><strong>Etape 1 : Démarrage</strong>
+                    <li>Le prog veut exécuter la première instruction, qui se trouve dans la page <or>A</or>.</li>
+                    <li>Il regarge la table des pages: "tient elle n'y est pas, défaut de page".</li>
+                    <li>Le noyau intervient, fait une entrée/sortie (E/S) sur le disque, et copie la page A dans la RAM.</li>
+                </ol>
+                <ol><strong>Etape 2 : Le programme avance</strong><br>Un peu plus tard, ton code a besoin de lire une variable globale <or>(dans la page B)</or> et d'exécuter une fonction d'une bibliothèque <or>(dans la page C)</or>.
+                    <li>Même scénario : deux nouveaux défauts de page.</li>
+                    <li>Le noyau charge les pages <or>B et C </or>dans des cases vides de la RAM.</li>
+                </ol>                
+
+                <ol><strong>Etape 3 : La RAM commence à être pleine</strong><br>
+                    Le système a maintenant besoin de place pour un autre programme. Le noyau remarque que la page A (le démarrage) n'a pas été utilisée depuis longtemps..
+                    <li>Même scénario : deux nouveaux défauts de page.</li>
+                    <li>Le noyau charge les pages <or>B et C </or>dans des cases vides de la RAM.</li>
+                </ol>                  
+
+                <h2>Le Mécanisme entre l'UC et la MMU</h2>            
+
+                <p>Imaginons que l'UC traite un processus, et le code lui dit d'aller prendre la valeur qui est à l'adresse virtuelle <or>12510</or>.</p>
+
+                <ol><strong>Etape 1 : L'UC passe commande à la MMU.</strong>
+                    <li>L'UC dit à la MMU : <em><or>"Traduis-moi l'adresse virtuelle 12510".</or></em></li>
+                </ol>
+
+                <ol><strong>Etape 2 : La MMU traduit l'adresse.</strong>
+                    <li>La mémoire (RAM et DD) étant divisée en pages de 4Ko, quel est le numéro de page ?
+                        <li>&#x1F449; On divise <or>12510</or> par <or>4Ko</or> : 12510 / 4000 = 3127.5. L'adresse virtuelle est donc en page <or>1327.</or></li>
+                        <li>&#x1F449; On calcule le décalage dans cette page avec modulo, le reste de la division: 12510 % 4000 = 510.</li>
+                        <li>La donnée se trouve à la page <or>1327</or> avec un offet de <or>510</or>. &#9989;</li>
+                </ol>
+                
+                <ol><strong>Etape 3 : La MMU interroge la Table des Pages.</strong>
+                    <br>La MMU va regarder la ligne numéro 1327 (la page A) dans la table des pages du processus actuel.
+                        <br>C'est ici que le destin du processus bascule selon les deux cas :
+                    <li><strong>Cas 1 : La page A est en RAM</strong></li>
+                    <ol>Supposons que cette page est en RAM à l'adresse 16 000K - 20 000K :
+                        <li>La MMU lit la ligne de la page A dans table des pages. Elle voit le bit de contrôle <or>Présent =1 </or>, la page est en RAM.</li>
+                        <li>Elle récupère l'adresse de base physique de la RAM : <or>16 000K.</or></li>
+                        <li>La MMU faire l'addition: Adresse physique = 16 000 + 510 = <or>16 510.</or></li>
+                        <li>La MMU renvoie l'adresse <or>16 510</or> à l'UC. Le CPU accède à la RAM en quelques nanosecondes.</li>
+                    </ol>
+                    <li><strong>Cas 2 : La page A n'est pas en RAM</strong></li>
+                    <ol>
+                        <li>La MMU lit la ligne de la page A dans table des pages. Elle voit le bit de contrôle <or>Présent =0</or>, la page n'est pas en RAM: l'adresse pointe vers le DD.</li>
+                        <li>La MMU est bloquée: elle ne peut pas lire la valeur de cette adresse sur le DD</li>
+                        <li>Elle déclenche une alerte matérielle: un défaut de page (Page Fault)</li>
+                        <li>La MMU renvoie l'adresse <or>16 510</or> à l'UC. Le CPU accède à la RAM en quelques nanosecondes</li>
+                    </ol>
+                    <li><strong>Sur défaut de page, le noyau prend le relais</strong></li>
+                    <ol>
+                        <li>L'UC s'arrête et met le processus en bloqué.</li>
+                        <li>Le noyau Linux prendre les commandes du CPU : il trouve une case de libre en RAM.</li>
+                        <li>Il ordonne au contrôleur DMA de transférer la page A du DD à la RAM.</li>
+                        <li>Quand le transfert est fini, le noyau modifie la table des pages: <or>Présent = 1.</or></li>
+                        <li>Le noyau réveille le processus.</li>
+                    </ol>
+                </ol>
 
 
+
+
+
+
+            <section id="defpage-swap-algo">
+                <h1>6. Défauts de page, Zone de Swap et Algorithmes de Remplacement</h1>
+                
+                <p>
+                    La mémoire virtuelle permet d'exécuter des programmes dont la taille combinée dépasse la capacité physique de la RAM. Cependant, ce mécanisme repose sur la gestion fine des interruptions et du stockage secondaire.
+                </p>
+
+                <h2>1. Qu'est-ce qu'un défaut de page (Page Fault) ?</h2>
+                <p>
+                    Un <strong>Page Fault</strong> est une interruption matérielle déclenchée par la MMU lorsque le processeur tente d'accéder à une adresse virtuelle dont la page correspondante n'est pas immédiatement disponible ou exploitable en RAM. On distingue quatre scénarios :
+                </p>
+                <ul class=ul_vert>
+                    <li>
+                        <strong>Demand Paging (Pagination à la demande) :</strong> La page demandée est légitime et définie dans une région, mais elle n'est pas en RAM car elle a été transférée sur le disque dans la zone de <em>swap</em> (ou n'a pas encore été chargée). C'est un défaut de page mineur ou majeur standard.
+                    </li>
+                    <li>
+                        <strong>Copy on Write (COW - Copie sur écriture) :</strong> Survient lorsqu'un processus tente d'écrire dans une page partagée configurée temporairement en lecture seule (fréquent après un <code>fork()</code>). Le noyau intercepte l'appel, duplique la page en RAM pour donner sa propre copie privée au processus, puis autorise l'écriture.
+                    </li>
+                    <li>
+                        <strong>Segmentation Fault (Violation de droits) :</strong> Le processus tente une action illégale sur une page présente en mémoire (par exemple, tenter d'écrire des données dans la section <code>.text</code> de code qui est strictement configurée en <em>Read-Only</em>). Le noyau lève une erreur et tue généralement le processus.
+                    </li>
+                    <li>
+                        <strong>Segmentation Fault (Hors zone) :</strong> Le processus tente d'accéder à une adresse virtuelle qui ne correspond à aucune des régions définies dans ses en-têtes de programme ELF. L'accès est illégitime, provoquant le plantage du programme.
+                    </li>
+                </ul>
+
+                <h2>2. Gestion du Swap (Swap-in &amp; Swap-out)</h2>
+                <p>
+                    Lorsqu'un défaut de page lié au <em>Demand Paging</em> survient, le noyau doit restaurer la page en mémoire physique. Ce mécanisme utilise le contrôleur <strong>DMA</strong> (<em>Direct Memory Access</em>) pour ne pas surcharger le processeur :
+                </p>
+                <ul class=ul_vert>
+                    <li>
+                        <strong>Le Swap-in :</strong> Le noyau va chercher la page manquante sur le disque et la rapatrie en RAM. Si un cadre de page (<em>page frame</em>) est libre en RAM, l'opération est directe.
+                    </li>
+                    <li>
+                        <strong>Le Swap-out :</strong> Si la RAM est totalement saturée, le noyau doit libérer de l'espace. Il choisit un cadre de page actif, copie son contenu sur le disque dans la zone de swap pour le vider, met à jour la table des pages du processus concerné, puis effectue le <em>Swap-in</em> de la nouvelle page dans le cadre ainsi libéré.
+                    </li>
+                </ul>
+
+                <h2>3. Algorithmes de remplacement de page</h2>
+                <p>
+                    Pour optimiser le <em>Swap-out</em> et éviter le phénomène de <strong>thrashing</strong> (où le système passe son temps à swapper au détriment de l'exécution du code), le noyau applique des politiques de remplacement pour choisir la page à sacrifier :
+                </p>
+                
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Algorithme</th>
+                            <th>Principe de fonctionnement</th>
+                            <th>Efficacité / Utilisation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>LRU</strong><br><small>(Least Recently Used)</small></td>
+                            <td>Éjecte la page qui n'a pas été consultée depuis la plus longue période de temps. Se base sur le principe de localité temporelle.</td>
+                            <td>Très performant, le standard conceptuel des OS modernes. Mais risque de famine (starvation)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FIFO</strong><br><small>(First In, First Out)</small></td>
+                            <td>Éjecte la plus ancienne page chargée en RAM, sans prendre en compte sa fréquence ou sa récence d'utilisation réelle.</td>
+                            <td>Peu performant (sensible à l'anomalie de Belady). Risque de trash.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LFU</strong><br><small>(Least Frequently Used)</small></td>
+                            <td>Compte le nombre d'accès à chaque page et supprime celle qui possède le compteur d'utilisation le plus bas.</td>
+                            <td>Utile pour certains patterns, mais peut stagner si de vieilles pages ne servent plus.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ARC / LRU-2</strong><br><small>(Adaptive Replacement Cache)</small></td>
+                            <td>Variantes avancées qui s'ajustent dynamiquement en combinant à la fois la récence (LRU) et la fréquence (LFU) des accès.</td>
+                            <td>Haute performance, utilisé dans les systèmes de fichiers et caches modernes.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Algorithme Optimal</strong></td>
+                            <td>Modèle théorique qui remplace la page qui ne sera pas consultée pendant la plus longue période <em>dans le futur</em>.</td>
+                            <td><strong>Impossible à implémenter</strong> (nécessite de prédire l'avenir), sert uniquement de jalon de référence pour les benchmarks.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!--------------------------------------------------------------------------- SYSTÈMES DE FICHIERS -->
+
+            <div class="mega-titre" id="titre4">SYSTÈMES DE FICHIERS</div>
+            <section id="systemes-fichiers">
+                <h1>1. Les Systèmes de Fichiers (File Systems)</h1>
+                
+                <p>
+                    Le système de fichiers assure la transition entre la vision <strong>logique</strong> de l'utilisateur (arborescence, répertoires, fichiers nommés) 
+                    et la gestion <strong>matérielle</strong> du noyau sur les blocs physiques de la mémoire de masse (disques durs, SSD).
+               
+                </p>
+
+                <!-- Bloc 1 : UNIX -->
+                <div class="bloc-interactif">
+                    <p><strong>UNIX</strong> est le modèle architectural historique et propriétaire.</p>
+                    
+                    <div class="contenu-cache">
+                        <h3>1. UNIX : Le système fondateur (Années 1970)</h3>
+                        <p>Créé aux laboratoires Bell d'AT&T par des pionniers comme Ken Thompson et Dennis Ritchie (le créateur du langage C), UNIX n'est pas juste un OS, c'est une philosophie d'architecture :</p>
+                        <ul>
+                            <li><strong>Le principe fondamental :</strong> Écrire des programmes simples, qui ne font qu'une seule chose, mais qui la font parfaitement bien, et qui communiquent entre eux via des flux de texte (les fameux tubes/pipes).</li>
+                            <li><strong>La marque de fabrique :</strong> C'est sous UNIX que sont nés les concepts fondamentaux (la séparation stricte processus/noyau, l'arborescence globale, les inodes, etc.).</li>
+                            <li><strong>Aujourd'hui :</strong> UNIX est devenu une marque et une spécification de normes très strictes (la certification POSIX). Les systèmes officiellement certifiés "UNIX" sont rares et souvent commerciaux (comme macOS d'Apple, ou AIX d'IBM).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bloc 2 : Linux -->
+                <div class="bloc-interactif">
+                    <p><strong>Linux</strong> est une implémentation moderne, libre, gratuite et open-source qui respecte la philosophie et le comportement d'UNIX. On dit que Linux est un système UNIX-like (de type UNIX).</p>
+                    
+                    <div class="contenu-cache">
+                        <h3>2. Linux : Le clone libre et moderne (1991)</h3>
+                        <p>Au début des années 90, UNIX était devenu cher, propriétaire et fermé. Linus Torvalds, alors étudiant, a décidé de réécrire un noyau à partir de zéro, en se basant sur le comportement d'UNIX mais sans en copier le code.</p>
+                        <ul>
+                            <li><strong>Un noyau, pas un OS complet :</strong> Techniquement, Linux désigne uniquement le noyau (le Kernel). Pour faire un système d'exploitation complet, on l'associe aux outils système du projet GNU (d'où le nom rigoureux GNU/Linux).</li>
+                            <li><strong>Open-Source et Gratuit :</strong> Contrairement à l'UNIX historique, Linux est libre. N'importe qui peut regarder son code, le modifier et le distribuer.</li>
+                            <li><strong>Sous le capot :</strong> Il est conçu pour réagir exactement comme UNIX. Un développeur C ou un administrateur système tape exactement les mêmes commandes (<code>ls</code>, <code>cd</code>, <code>fork()</code>, <code>open()</code>) sur un système UNIX et sur un système Linux.</li>
+                        </ul>
+                    </div>
+                </div>                
+
+                <h2>Cinq Systèmes de Fichiers </h2>
+                
+                <table class=tableau_style>
+                    <thead>
+                        <tr>
+                            <th>Système de Fichiers</th>
+                            <th>Architecture &amp; Spécificités Académiques</th>
+                            <th>Limites / Évolutions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>FAT</strong><br><small>(File Allocation Table)</small></td>
+                            <td><strong>Pas d'inodes.</strong> Tout repose sur une table d'indexation unique située au début de la partition qui liste le chaînage des blocs physiques.</td>
+                            <td>Aucune gestion des droits/permissions, forte fragmentation, et limites de taille historiques (ex: 4 Go maximum par fichier pour FAT32).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UFS</strong><br><small>(Unix File System)</small></td>
+                            <td><strong>Le modèle théorique Unix.</strong> Introduit la séparation stricte entre les données (blocs de stockage) et les métadonnées 
+                                (via la structure d'<strong>inode</strong>). Indexation des blocs multiniveaux (directs et indirects simples, doubles, triples).</td>
+                            <td>Modèle fondateur qui sert de socle architectural à la quasi-totalité des systèmes de fichiers sous Linux et BSD.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lignée Ext</strong><br><small>(Ext2 &rarr; Ext3 &rarr; Ext4)</small></td>
+                            <td>Le standard natif de Linux. 
+                                <ul>
+                                    <li><strong>Ext2 :</strong> Gestion d'inodes basique, vulnérable aux crashs.</li>
+                                    <li><strong>Ext3 :</strong> Introduction du <strong>Journaling</strong> (résistance aux pannes).</li>
+                                    <li><strong>Ext4 :</strong> Standard moderne exploitant les <strong>extents</strong>.</li>
+                                </ul>
+                            </td>
+                            <td>Ext2 nécessitait un scan complet (<code>fsck</code>) très lent après chaque coupure brutale. 
+                                Ext4 résout la fragmentation des gros fichiers grâce aux plages de blocs contigus.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NTFS</strong><br><small>(New Technology FS)</small></td>
+                            <td>Le standard moderne de Windows. Système propriétaire intégrant nativement le journalisme, la compression à la volée, 
+                                et la gestion des listes de contrôle d'accès complexes (ACL) pour la sécurité.</td>
+                            <td>Performant et sécurisé, il a définitivement remplacé l'architecture FAT pour les systèmes d'exploitation Windows modernes.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Btrfs / ZFS</strong></td>
+                            <td>La nouvelle génération de systèmes de fichiers. Conçus pour les serveurs et le stockage à très grande échelle. 
+                                Reposent sur le mécanisme du <strong>Copy-on-Write (CoW)</strong>.</td>
+                            <td>Permettent la création quasi instantanée de <strong>snapshots</strong> (instantanés du système pour la sauvegarde) sans figer ni ralentir les entrées/sorties.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Les 3 Concepts Théoriques Fondamentaux</h2>
+                
+                <p><strong>L'inode (Index-Node)</strong></p>
+                <p>
+                    C'est la structure de données centrale du système de fichiers Unix. L'inode constitue la carte d'identité unique d'un fichier. **Attention : un inode ne contient jamais le nom du fichier** (le nom est stocké uniquement dans les blocs de données du répertoire parent). Un inode contient :
+                </p>
+                <ul>
+                    <li>Les métadonnées (taille en octets, UID/GID du propriétaire, droits d'accès RWX, horodatages).</li>
+                    <li>La table de pointeurs pointant directement ou indirectement vers les numéros de blocs physiques sur le disque.</li>
+                </ul>
+
+                <p><strong>Le journaling</strong></p>
+                <p>
+                    Mécanisme de tolérance aux pannes. Avant d'appliquer une modification structurelle sur les blocs de données ou les inodes, le noyau consigne son intention d'écriture dans une zone circulaire dédiée nommée le journal. 
+                </p>
+                <ul>
+                    <li>Si une coupure de courant survient au milieu de l'écriture, le système ne subit pas d'incohérence logicielle.</li>
+                    <li>Au redémarrage, le noyau vérifie le journal : il valide la transaction incomplète si toutes les données y sont présentes, ou l'annule proprement (<em>rollback</em>), évitant un scan complet du volume.</li>
+                </ul>
+
+                <p><strong>Les Extents (Plages de blocs contigus)</strong></p>
+                <p>
+                    Technique moderne d'allocation de blocs (utilisée par Ext4). Au lieu de lister individuellement des milliers d'adresses de blocs dans l'inode pour un seul fichier volumineux, un extent définit une plage sous la forme d'un couple : <code>[Adresse du bloc de départ ; Nombre de blocs consécutifs]</code>. Cela réduit drastiquement la taille de l'inode et la fragmentation sur le disque.
+                </p>
+            </section>
+
+<section id="type-fichiers">
+                <h1>2. Types de fichiers</h1>
+                
+                <p>
+                    Sous Unix et Linux, le système applique le grand principe fondateur : <strong>"Tout est fichier"</strong>. 
+                    Un fichier est une abstraction logique gérée par le système d'exploitation pour manipuler des données ou interagir avec le matériel.
+                </p>
+
+                <h2>Qu'est-ce qu'un fichier sous Unix/Linux ?</h2>
+                <p>
+                    Selon le modèle Unix, un fichier se caractérise par les éléments suivants :
+                </p>
+                <ul class=ul_vert>
+                    <li>
+                        <strong>Un nom ou un chemin d'accès :</strong> Il permet à l'utilisateur d'identifier et de localiser logiquement le fichier dans l'arborescence.
+                    </li>
+                    <li>
+                        <strong>Un unique inode (inode) :</strong> C'est la structure interne qui contient toutes les métadonnées essentielles (le type de fichier, les droits d'accès, la taille, etc.), à l'exception de son nom.
+                    </li>
+                    <li>
+                        <strong>Un ensemble de fonctionnalités système fondamentales :</strong> L'accès à tout fichier repose sur quatre primitives système de base : 
+                        l'ouverture (<or>open</or>), la fermeture (<or>close</or>), la lecture ou consultation (<or>read</or>), et l'écriture ou modification (<or>write</or>).
+                    </li>
+                </ul>
+
+                <h2>La typologie des fichiers (Les 7 types)</h2>
+                <p>
+                    Lorsque l'on effectue une commande <or>ls -l</or>, le tout premier caractère de la ligne indique la nature exacte du fichier. Le système les divise en trois grandes catégories :
+                </p>
+                
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Caractère</th>
+                            <th>Type de Fichier</th>
+                            <th>Description et Rôle Système</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong><code>-</code></strong></td>
+                            <td><strong>Fichier ordinaire</strong></td>
+                            <td>Contient des données classiques utilisateur (texte source, fichiers binaires compilés, images).</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>d</code></strong></td>
+                            <td><strong>Répertoire (Directory)</strong></td>
+                            <td>Fichier spécial contenant une liste de couples [Nom de fichier, Numéro d'inode] servant à structurer l'arborescence.</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>l</code></strong></td>
+                            <td><strong>Lien symbolique</strong></td>
+                            <td>Un raccourci contenant le chemin textuel vers un autre fichier ou répertoire.</td>
+                        </tr>
+                        <!-- Sous-catégorie Pseudo-fichiers -->
+                        <tr>
+                            <td><strong><code>s</code></strong></td>
+                            <td><strong>Socket</strong></td>
+                            <td>Pseudo-fichier réseau permettant une communication bidirectionnelle entre deux processus distincts (locaux ou distants).</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>p</code></strong></td>
+                            <td><strong>Tube nommé (Named Pipe / FIFO)</strong></td>
+                            <td>Pseudo-fichier de communication inter-processus local fonctionnant selon le principe du Premier Entré, Premier Sorti.</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>c</code></strong></td>
+                            <td><strong>Fichier de type caractère</strong></td>
+                            <td>Pseudo-fichier d'interface pour les périphériques matériels qui transmettent les données flux par flux, caractère par caractère (ex: terminaux, clavier, souris).</td>
+                        </tr>
+                        <tr>
+                            <td><strong><code>b</code></strong></td>
+                            <td><strong>Fichier de type bloc</strong></td>
+                            <td>Pseudo-fichier d'interface pour les périphériques matériels stockant et lisant les données par blocs entiers adressables via des caches (ex: disques durs, partitions, clés USB).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Fichier Ordinaire (<code>-</code>)</h2>
+                <p>
+                    Un fichier ordinaire est caractérisé de manière brute par son contenu, perçu par le système comme une simple <strong>suite continue d'octets (ou de caractères)</strong> sans structure interne imposée par le noyau.
+                </p>
+                <p>
+                    Lorsqu'un processus ouvre un fichier ordinaire, le noyau lui associe un <strong>pointeur de fichier</strong> (offset) qui repère la position courante pour la prochaine opération de lecture ou d'écriture.
+                    <br>Un processus peut ouvrir plusieurs fois le même fichier, et plusieurs processus peuvent ouvrir le même fichier. Chaque ouverture reçoit son propre descripteur de fichier, et pointeur indépendant.
+                    <br>Par contre <or>l'inode reste le même.</or>
+                </p>
+                <p>
+                    Des fonctionnalités supplémentaires permettent de manipuler ce flux d'octets :
+                </p>
+                <ul>
+                    <li>
+                        <strong>Le positionnement du pointeur de fichier :</strong> Grâce à la primitive <or>lseek()</or>, un processus peut déplacer son pointeur à n'importe quel octet du fichier pour réaliser des accès directs non séquentiels.
+                    </li>
+                    <li>
+                        <strong>L'écriture en fin de fichier :</strong> Une opération d'écriture effectuée à la position finale courante a pour conséquence directe <strong>l'extension de la taille du fichier</strong>, entraînant l'allocation de nouveaux blocs physiques sur le disque par le noyau.
+                    </li>
+                </ul>
+            </section>
+
+            <section id="table-inodes">
+                <h1>3. Inodes et table des inodes</h1>
+                
+                <p>
+                    <strong>Un inode</strong> est une structure de données interne utilisée par les systèmes de fichiers de type Unix/Linux (comme ext2, ext3, ext4 ou UFS) pour représenter un fichier ou un répertoire.
+                    <br>Chaque fichier possède un unique inode, identifié par un numéro entier unique dans le système de fichiers. 
+                    <br>L'inode fait <or>128 octets</or>. Les métadonnées occupent <or>68 octets</or> et les 13 adresses de blocs <or>52 octets</or>, pour un total de <or>120 octets.</or>
+                    <br>L'inode est situé au début du disque dur, à la suite des autres inodes, ainsi tous les fichiers sont répertoriés de cette manière. Cette table est appelée <strong>table des inodes</strong>.
+                </p>
+
+                <blockquote>
+                    <strong>Règles d'or de l'inode :</strong>
+                    <ul>
+                        <li>Tout fichier possède son unique inode.</li>
+                        <li>L'inode d'un fichier contient la totalité des informations et métadonnées sur le fichier <strong>hormis son nom</strong>.</li>
+                        <li>Les inodes d'un même système de fichiers sont tous de même taille.</li>
+                    </ul>
+                </blockquote>
+
+                <h2>Structure et Métadonnées d'un inode</h2>
+                <p>
+                    Les métadonnées contistuent la première partie de l'inode:
+                </p>
+                <ul class="ul_vert">
+                    <li><strong>Type de fichier :</strong> Permet d'identifier s'il s'agit d'un fichier ordinaire (<code>-</code>), répertoire (<code>d</code>), lien (<code>l</code>), socket (<code>s</code>), 
+                        tube (<code>p</code>), ou périphérique (<code>c</code>, <code>b</code>).</li>
+                    <li><strong>Droits d'accès :</strong> Les permissions de lecture, écriture, exécution pour les trois catégories d'utilisateurs (ex: <code>rwxr-x--</code>).</li>
+                    <li><strong>Nombre de liens (physiques) :</strong> Le nombre de références ou de noms pointant vers cet inode unique.</li>
+                    <li><strong>UID (User ID) :</strong> L'identifiant effectif du propriétaire (processus créateur ou modifié via <code>chown</code>).</li>
+                    <li><strong>GID (Group ID) :</strong> L'identifiant effectif du groupe associé (processus créateur, hérité ou modifié via <code>chgrp</code>).</li>
+                    <li><strong>Taille du fichier :</strong> Exprimée de manière brute en octets.</li>
+                    <li><strong>Horodatages (Timestamps) :</strong>
+                        <ul>
+                            <li><code>atime</code> : Date de dernière consultation (lecture) du contenu du fichier.</li>
+                            <li><code>mtime</code> : Date de dernière modification (écriture) du contenu du fichier.</li>
+                            <li><code>ctime</code> : Date de dernière modification de la structure même de l'inode.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Adresses :</strong> La liste fixe contenant les adresses des blocs physiques stockant les données sur le disque.</li>
+                </ul>
+
+                <div class="picture">
+                    <img src="./res/inode_stat.jpg" alt="inode"/>
+                </div>
+
+                <h2>L'Adressage des Blocs de Données (Système d'indirection)</h2>
+                <p>
+                    C'est dans la seconde partie de l'indode que l'on trouve les adresses des données.
+                    <br>L'inode ne contient pas directement les données du fichier, mais une <strong>liste de n adresses</strong> 
+                    (<strong>n</strong> étant fixe et dépendant du type de système de fichiers, typiquement n = 13 sur systèmes ext2 et ext3). 
+                    <br>Pour optimiser l'espace tout en permettant le stockage de très gros fichiers, Unix utilise un mécanisme d'indirection hiérarchique :
+                </p>
+
+                <table class="tableau_style">
+                    <thead>
+                        <tr>
+                            <th>Entrées dans l'inode</th>
+                            <th>Type d'adressage</th>
+                            <th>Description du mécanisme de pointage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Les 10 adresses directes : bloc 0 à 9</td>
+                            <td><strong>Adressage Direct</strong></td>
+                            <td>Les adresses pointent directement vers des blocs physiques contenant les données brutes utilisateur. C'est ultra-rapide pour les petits fichiers.</td>
+                        </tr>
+                        <tr>
+                            <td>1 adresse indirecte : bloc 10</td>
+                            <td><strong>Adressage Indirect Simple</strong></td>
+                            <td>L'adresse pointe vers un bloc intermédiaire (sur le disque) qui ne contient pas de données, mais uniquement une liste d'adresses pointant vers les blocs de données finaux.</td>
+                        </tr>
+                        <tr>
+                            <td>1 adresse indirecte double : bloc 11</td>
+                            <td><strong>Indirection Double</strong></td>
+                            <td>Pointe vers un bloc d'adresses, qui pointent chacun à leur tour vers d'autres blocs d'adresses, qui pointent enfin vers les blocs de données (2 niveaux d'indirection).</td>
+                        </tr>
+                        <tr>
+                            <td>1 adresse indirecte triple : bloc 12</td>
+                            <td><strong>Indirection Triple</strong></td>
+                            <td>Mécanisme à 3 niveaux d'indirection utilisé pour cartographier les fichiers volumineux qui dépassent les capacités des niveaux inférieurs.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <figure class="picture">
+                    <img src="./res/table_inode.png" alt="Structure inode" />
+                    <figcaption>Adressage des blocs de données</figcaption>
+                </figure>
+
+            <ul><strong>Explications</strong>
+                <li><strong>En jaune,</strong> nous avons les 10 premières adresses directes (0 à 9).
+                    <br>La première adresse, contenue dans la case 0, pointe le tout début du fichier.
+                    <br>Le disque dur étant divisé en blocs du 4Ko, la seconde adresse pointe <or>le début du fichier + 4Ko.</or>
+                    <br>Ainsi, si un ficher fait 12Ko, il sera divisé en 3 blocs de 4 Ko. Et donc les 3 premières adresses pointeront ces trois parties, c'est à dire l'intégralité des données du fichier.
+                    <br>Avec 10 adresses directes, on peut pointer l'intégralité des données d'un fichier de 40 Ko. (10 blocs * 40Ko).
+                </li>
+                <li><strong>En bleu,</strong> une adresse indirecte. Elle ne pointe pas une donnée, mais un bloc de 4Ko sur le disque qui contient d'autres adresses.
+                    <br>Une adresse est codée sur 4 octets (32bits). Donc dans le bloc bleu de 4Ko, on a <or>4096 octets / 4 octets = 1024 adresses.</or>
+                    <br>Avec <or>1024 adresses</or>, on peut adresser un fichier de <or>1024 * 4Ko = 4096 kilo-octects (4Mo).</or>
+                </li>
+                <li>
+                    <strong>En vert,</strong> le principe est le même mais le premier bloc vert ne va pas pointer des données, mais vers d'autres blocs d'adresses.
+                    <br>Ainsi, chaque ligne du premier bloc pointe un autre bloc vert de 4Ko, qui contient de 1024 adresses. Ce deuxième bloc pointe ensuite les données.
+                    <br>Comme il y a 1024 lignes dans le premier bloc, il pointe <or>1024 blocs</or> qui ont eux-même <or>1024 lignes.</or>
+                    <br>On a donc à ce niveau <or>1024 x 1024 = 1 048 576 d'adresses</or>. 
+                    <br>Ce système à deux adresses à la suite s'appelle le <strong>double adressage indirect.</strong>
+                    <br>Au final comme on a <or>1 048 576 adresses</or>, on peut adresser chaque blocs de 4Ko d'un fichier qui a pour taille totale <or>1 048 576 x 4Ko = 4 194 304 Ko (4Go)</or>
+                </li>
+
+            </ul>
+            
+            </section>
+            
+            
 
         </div>      <!-- Fin div Le Cours -->
     </div>

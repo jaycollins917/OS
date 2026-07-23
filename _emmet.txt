@@ -1,3 +1,4 @@
 
 
 ul>li*3
+ul>li*3>strong

@@ -20,12 +20,14 @@ umount	démonter des fichiers systèmes.
 	supprimer une partition, un point de montage 
 
 ls	List directory content
-ls -m	Liste avec des virgules
-ls -a	Affiche .  (répertoire courant)
+	-m	Liste avec des virgules
+	-a	Affiche .  (répertoire courant)
 		.. (répertoire parent)	
 		.cache (le cache)
-		
-ls -l	liste les répertoires au format long
+
+	-l	liste les répertoires au format long
+	-i	Affiche l'inode
+	-R	Mode récursif
 ---------------------------------------------
 Exemple
 ls -l /media

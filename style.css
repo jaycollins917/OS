@@ -6,12 +6,12 @@ html {
 body {
     background-color: rgb(10, 10, 10);
     font-family: 'Plus Jakarta Sans', sans-serif;
-    letter-spacing:px;
+    word-spacing: 1px;
     color: white;
 
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-        url('galaxie.jpg');
+        url('./res/galaxie.jpg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -19,6 +19,8 @@ body {
     background-color: #000000;
     margin: 0;
     padding: 0;
+
+    line-height: 1.8em;
 }
 
 #coSouris {        
@@ -72,9 +74,16 @@ h2 {
 p {
     margin-left: 20px;
     line-height: 1.8em;
+
 }
 
+strong {
+    color:rgb(111, 255, 98);
+}
 
+.ul_vert>li::marker{
+    color:rgb(111, 255, 98);
+}
 
 /* Conteneur principal qui aligne le menu et le cours */
 .contenu {
@@ -173,9 +182,7 @@ a:hover {
     letter-spacing: 0.02em;
 }
 
-strong {
-    color:rgb(111, 255, 98);
-}
+
 
 .picture {
     display: flex;
@@ -272,7 +279,7 @@ code {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 1rem;
     font-style: normal;
-    color:aqua;
+    color:rgba(253, 109, 109, 0.747);
     margin: 5px;
 }
 
@@ -287,3 +294,66 @@ code {
     color: #ffb74d;                         /* Devient orange au survol */
     text-decoration: underline;
 }
+
+.trois_img{
+    display: flex;
+    justify-content: center;
+}
+
+.picture1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.picture1>img{
+    max-width: 105%;
+    height: auto;
+    padding: 5px;
+    
+}
+
+.picture1>figcaption{
+    padding: 5px;
+    text-align: center;
+    font-size: 1em;
+    
+}
+
+.mega-titre {
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: bold;
+    color: rgba(255, 51,51);
+    text-align: center;
+    letter-spacing: 2px;
+
+    padding: 10px;
+
+    border-bottom: solid 1px;
+    border-color: rgb(255, 51, 51);
+}
+
+or {
+    color: orange;
+}
+
+.bloc-interactif {
+                        margin-bottom: 20px;
+                        padding: 10px;
+                        cursor: help;
+                        border-left: 3px solid #2ecc71;
+                    }
+
+                    /* On masque le contenu explicatif par défaut */
+                    .contenu-cache {
+                        display: none;
+                        margin-top: 10px;
+                        padding: 10px;
+                        background-color: #111; /* Fond sombre pour s'accorder à ton site */
+                        border-radius: 4px;
+                    }
+
+                    /* Au survol de la phrase principale, on affiche le bloc caché */
+                    .bloc-interactif:hover .contenu-cache {
+                        display: block;
+                    }
